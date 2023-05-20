@@ -20,12 +20,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    // exposed
-    implementation("org.jetbrains.exposed:spring-transaction:0.41.1")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
-    implementation("org.jetbrains.exposed:exposed-java-time:0.41.1")
-    implementation("org.jetbrains.exposed:exposed-core:0.41.1")
-
     // devtools
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")
