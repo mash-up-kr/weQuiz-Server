@@ -5,6 +5,7 @@ import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizResponse
+import kr.mashup.wequiz.controller.quiz.model.GetQuizResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,15 +23,14 @@ class QuizApiController(
         @UserInfo userInfoDto: UserInfoDto,
         @RequestBody createQuizRequest: CreateQuizRequest,
     ): CreateQuizResponse {
-        return quizService.createQuiz(userInfoDto, createQuizRequest)
-            .let { CreateQuizResponse(it.id) }
+        return CreateQuizResponse(quizId = quizService.createQuiz(userInfoDto, createQuizRequest).id)
     }
-
 
     @GetMapping("/{quizId}")
     fun getQuiz(
         @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long,
-    ) {
+    ): GetQuizResponse {
+        return quizService.getQuiz(quizId)
     }
 }
