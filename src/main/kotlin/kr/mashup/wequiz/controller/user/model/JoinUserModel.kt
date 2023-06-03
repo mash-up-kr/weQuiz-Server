@@ -1,4 +1,4 @@
-package kr.mashup.wequiz.controller.user.dto
+package kr.mashup.wequiz.controller.user.model
 
 data class JoinUserRequest(
     val token: String,

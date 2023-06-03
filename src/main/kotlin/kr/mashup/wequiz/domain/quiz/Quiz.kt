@@ -1,14 +1,6 @@
 package kr.mashup.wequiz.domain.quiz
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToMany
-import jakarta.persistence.OneToOne
+import jakarta.persistence.*
 import kr.mashup.wequiz.domain.quiz.question.Question
 import kr.mashup.wequiz.domain.user.User
 
@@ -19,16 +11,33 @@ class Quiz(
     val id: Long = 0,
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     val user: User,
 
     @Column(name = "title")
     val title: String,
 
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.ALL])
     @JoinColumn(name = "quiz_id")
-    val questions: List<Question>,
+    val questions: MutableList<Question> = mutableListOf(),
 
     @Column(name = "is_delete")
     val isDelete: Boolean,
-)
+) {
+    fun setQuestions(questions: List<Question>) {
+        this.questions.addAll(questions)
+    }
+
+    companion object {
+        fun createNew(
+            user: User,
+            title: String,
+        ): Quiz {
+            return Quiz(
+                user = user,
+                title = title,
+                isDelete = false,
+            )
+        }
+    }
+}

@@ -20,9 +20,25 @@ class Answer(
     @Column(name = "content")
     val content: String,
 
-    @Column(name = "order")
-    val order: Int,
+    @Column(name = "priority")
+    val priority: Int,
 
     @Column(name = "correct_answer")
     val correctAnswer: Boolean,
-)
+) {
+    companion object {
+        fun createNew(
+            question: Question,
+            content: String,
+            priority: Int,
+            correctAnswer: Boolean,
+        ): Answer {
+            return Answer(
+                question = question,
+                content = content,
+                priority = priority,
+                correctAnswer = correctAnswer,
+            )
+        }
+    }
+}

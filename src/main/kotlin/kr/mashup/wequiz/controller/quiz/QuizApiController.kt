@@ -3,8 +3,12 @@ package kr.mashup.wequiz.controller.quiz
 import kr.mashup.wequiz.application.quiz.QuizService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
+import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
+import kr.mashup.wequiz.controller.quiz.model.CreateQuizResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -13,6 +17,15 @@ import org.springframework.web.bind.annotation.RestController
 class QuizApiController(
     private val quizService: QuizService,
 ) {
+    @PostMapping
+    fun createQuiz(
+        @UserInfo userInfoDto: UserInfoDto,
+        @RequestBody createQuizRequest: CreateQuizRequest,
+    ): CreateQuizResponse {
+        return quizService.createQuiz(userInfoDto, createQuizRequest)
+            .let { CreateQuizResponse(it.id) }
+    }
+
 
     @GetMapping("/{quizId}")
     fun getQuiz(

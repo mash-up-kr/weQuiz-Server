@@ -1,13 +1,6 @@
 package kr.mashup.wequiz.domain.quiz.question
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToMany
+import jakarta.persistence.*
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.quiz.answer.Answer
 
@@ -23,12 +16,32 @@ class Question(
     @Column(name = "title")
     val title: String,
 
-    @Column(name = "order")
-    val order: Int,
+    @Column(name = "priority")
+    val priority: Int,
 
     @Column(name = "is_duplicated_answer")
     val duplicatedAnswer: Boolean,
 
-    @OneToMany(mappedBy = "question")
-    val answers: List<Answer>,
-)
+    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL])
+    val answers: MutableList<Answer> = mutableListOf(),
+) {
+    fun setAnswers(answers: List<Answer>) {
+        this.answers.addAll(answers)
+    }
+
+    companion object {
+        fun createNew(
+            quiz: Quiz,
+            title: String,
+            priority: Int,
+            duplicatedAnswer: Boolean,
+        ): Question {
+            return Question(
+                quiz = quiz,
+                title = title,
+                priority = priority,
+                duplicatedAnswer = duplicatedAnswer,
+            )
+        }
+    }
+}
