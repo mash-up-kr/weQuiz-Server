@@ -14,7 +14,10 @@ class UserService(
         nickname: String,
         description: String,
     ) {
-        //TODO 폰번호 중복 체크, validation etc ,,,
+        val isExists = userRepository.existsByToken(token)
+
+        if (isExists)
+            throw RuntimeException()
 
         val user = User.createNew(
             token = token,
