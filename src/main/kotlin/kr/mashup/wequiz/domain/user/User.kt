@@ -5,20 +5,29 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
+import kr.mashup.wequiz.domain.quiz.Quiz
 
 @Entity
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
+
     @Column(name = "token")
     val token: String,
+
     @Column(name = "phone")
     val phone: String,
+
     @Column(name = "nickname")
     val nickname: String,
+
     @Column(name = "description")
-    val description: String
+    val description: String,
+
+    @OneToMany(mappedBy = "user")
+    val quiz: List<Quiz> = emptyList(),
 ) {
 
     companion object {
@@ -32,7 +41,7 @@ class User(
                 token = token,
                 phone = phone,
                 nickname = nickname,
-                description= description,
+                description = description,
             )
         }
     }

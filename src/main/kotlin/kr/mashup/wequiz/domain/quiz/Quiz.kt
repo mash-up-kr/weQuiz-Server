@@ -8,7 +8,9 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 import kr.mashup.wequiz.domain.quiz.question.Question
+import kr.mashup.wequiz.domain.user.User
 
 @Entity
 class Quiz(
@@ -16,11 +18,17 @@ class Quiz(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    val user: User,
+
     @Column(name = "title")
     val title: String,
 
     @OneToMany
-    @JoinColumn()
-    val questions: List<Question>
-) {
-}
+    @JoinColumn(name = "quiz_id")
+    val questions: List<Question>,
+
+    @Column(name = "is_delete")
+    val isDelete: Boolean,
+)
