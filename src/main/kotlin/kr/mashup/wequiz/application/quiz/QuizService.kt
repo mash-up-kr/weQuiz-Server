@@ -4,7 +4,7 @@ import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.GetQuizResponse
 import kr.mashup.wequiz.domain.quiz.Quiz
-import kr.mashup.wequiz.domain.quiz.answer.Answer
+import kr.mashup.wequiz.domain.quiz.option.Option
 import kr.mashup.wequiz.domain.quiz.question.Question
 import kr.mashup.wequiz.repository.quiz.QuizRepository
 import kr.mashup.wequiz.repository.user.UserRepository
@@ -33,18 +33,18 @@ class QuizService(
                 quiz = quiz,
                 title = questionDto.title,
                 priority = questionDto.priority,
-                duplicatedAnswer = questionDto.duplicatedAnswer,
+                duplicatedOption = questionDto.duplicatedOption,
             )
 
-            val answers = questionDto.answers.map { answerDto ->
-                Answer.createNew(
+            val options = questionDto.options.map { optionDto ->
+                Option.createNew(
                     question = question,
-                    content = answerDto.content,
-                    priority = answerDto.priority,
-                    correctAnswer = answerDto.correctAnswer,
+                    content = optionDto.content,
+                    priority = optionDto.priority,
+                    isCorrect = optionDto.isCorrect,
                 )
             }
-            question.also { it.setAnswers(answers) }
+            question.also { it.setOptions(options) }
         }
 
         quiz.setQuestions(questions = questions)

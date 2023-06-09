@@ -2,7 +2,7 @@ package kr.mashup.wequiz.domain.quiz.question
 
 import jakarta.persistence.*
 import kr.mashup.wequiz.domain.quiz.Quiz
-import kr.mashup.wequiz.domain.quiz.answer.Answer
+import kr.mashup.wequiz.domain.quiz.option.Option
 
 @Entity
 class Question(
@@ -19,14 +19,14 @@ class Question(
     @Column(name = "priority")
     val priority: Int,
 
-    @Column(name = "is_duplicated_answer")
-    val duplicatedAnswer: Boolean,
+    @Column(name = "is_duplicated_Option")
+    val duplicatedOption: Boolean,
 
     @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL])
-    val answers: MutableList<Answer> = mutableListOf(),
+    val options: MutableList<Option> = mutableListOf(),
 ) {
-    fun setAnswers(answers: List<Answer>) {
-        this.answers.addAll(answers)
+    fun setOptions(Options: List<Option>) {
+        this.options.addAll(Options)
     }
 
     companion object {
@@ -34,13 +34,13 @@ class Question(
             quiz: Quiz,
             title: String,
             priority: Int,
-            duplicatedAnswer: Boolean,
+            duplicatedOption: Boolean,
         ): Question {
             return Question(
                 quiz = quiz,
                 title = title,
                 priority = priority,
-                duplicatedAnswer = duplicatedAnswer,
+                duplicatedOption = duplicatedOption,
             )
         }
     }
