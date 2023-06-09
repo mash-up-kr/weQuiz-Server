@@ -36,6 +36,10 @@ class Quiz(
         return user.id == userId
     }
 
+    fun findQuestion(questionId: Long): Question? {
+        return questions.find { it.id == questionId }
+    }
+
     companion object {
         fun createNew(
             user: User,
