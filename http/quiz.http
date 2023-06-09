@@ -1,0 +1,62 @@
+### 퀴즈 생성
+POST http://{{host}}/api/v1/quiz
+Content-Type: application/json
+x-wequiz-token: your_token_value
+
+{
+  "title": "Your Quiz Title",
+  "questions": [
+    {
+      "title": "Question 1",
+      "priority": 1,
+      "duplicatedAnswer": false,
+      "answers": [
+        {
+          "content": "Answer 1",
+          "priority": 1,
+          "correctAnswer": true
+        },
+        {
+          "content": "Answer 2",
+          "priority": 2,
+          "correctAnswer": false
+        },
+        {
+          "content": "Answer 3",
+          "priority": 3,
+          "correctAnswer": false
+        }
+      ]
+    },
+    {
+      "title": "Question 2",
+      "priority": 2,
+      "duplicatedAnswer": true,
+      "answers": [
+        {
+          "content": "Answer 1",
+          "priority": 1,
+          "correctAnswer": true
+        },
+        {
+          "content": "Answer 2",
+          "priority": 2,
+          "correctAnswer": false
+        },
+        {
+          "content": "Answer 3",
+          "priority": 3,
+          "correctAnswer": false
+        }
+      ]
+    }
+  ]
+}
+
+### 퀴즈 조회
+GET http://{{host}}/api/v1/quiz/1
+x-wequiz-token: your_token_value
+
+### 퀴즈 삭제
+DELETE http://{{host}}/api/v1/quiz/1
+x-wequiz-token: your_token_value

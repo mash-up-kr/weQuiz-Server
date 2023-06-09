@@ -1,0 +1,11 @@
+### 회원 가입
+POST http://{{host}}/api/v1/user/join
+Content-Type: application/json
+x-wequiz-token: your_token_value
+
+{
+  "token": "your_token_value",
+  "phone": "your_phone_number",
+  "nickname": "your_nickname",
+  "description": "your_description"
+}
