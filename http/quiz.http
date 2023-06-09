@@ -10,21 +10,21 @@ x-wequiz-token: your_token_value
       "title": "Question 1",
       "priority": 1,
       "duplicatedAnswer": false,
-      "answers": [
+      "options": [
         {
           "content": "Answer 1",
           "priority": 1,
-          "correctAnswer": true
+          "isCorrect": true
         },
         {
           "content": "Answer 2",
           "priority": 2,
-          "correctAnswer": false
+          "isCorrect": false
         },
         {
           "content": "Answer 3",
           "priority": 3,
-          "correctAnswer": false
+          "isCorrect": false
         }
       ]
     },
@@ -32,21 +32,21 @@ x-wequiz-token: your_token_value
       "title": "Question 2",
       "priority": 2,
       "duplicatedAnswer": true,
-      "answers": [
+      "options": [
         {
           "content": "Answer 1",
           "priority": 1,
-          "correctAnswer": true
+          "isCorrect": true
         },
         {
           "content": "Answer 2",
           "priority": 2,
-          "correctAnswer": false
+          "isCorrect": false
         },
         {
           "content": "Answer 3",
           "priority": 3,
-          "correctAnswer": false
+          "isCorrect": false
         }
       ]
     }
