@@ -5,7 +5,9 @@ import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizResponse
+import kr.mashup.wequiz.controller.quiz.model.DeleteQuizResponse
 import kr.mashup.wequiz.controller.quiz.model.GetQuizResponse
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -32,5 +34,17 @@ class QuizApiController(
         @PathVariable(name = "quizId") quizId: Long,
     ): GetQuizResponse {
         return quizService.getQuiz(quizId)
+    }
+
+    @DeleteMapping("/{quizId}")
+    fun deleteQuiz(
+        @UserInfo userInfoDto: UserInfoDto,
+        @PathVariable(name = "quizId") quizId: Long,
+    ): DeleteQuizResponse {
+        quizService.deleteQuiz(
+            requesterId = userInfoDto.id,
+            quizId = quizId,
+        )
+        return DeleteQuizResponse(isDeleted = true)
     }
 }

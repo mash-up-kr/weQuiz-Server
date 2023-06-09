@@ -22,10 +22,18 @@ class Quiz(
     val questions: MutableList<Question> = mutableListOf(),
 
     @Column(name = "is_delete")
-    val isDelete: Boolean,
+    var isDelete: Boolean,
 ) {
     fun setQuestions(questions: List<Question>) {
         this.questions.addAll(questions)
+    }
+
+    fun delete() {
+        isDelete = true
+    }
+
+    fun isOwner(userId: Long): Boolean {
+        return user.id == userId
     }
 
     companion object {

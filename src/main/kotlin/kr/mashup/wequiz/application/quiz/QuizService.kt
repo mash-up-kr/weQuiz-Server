@@ -11,7 +11,6 @@ import kr.mashup.wequiz.repository.user.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.jvm.optionals.getOrNull
 
 @Service
 class QuizService(
@@ -23,7 +22,7 @@ class QuizService(
         userInfoDto: UserInfoDto,
         createQuizRequest: CreateQuizRequest,
     ): Quiz {
-        val user = userRepository.findByIdOrNull(userInfoDto.id) ?: throw RuntimeException()
+        val user = userRepository.findByIdOrNull(userInfoDto.id) ?: throw IllegalArgumentException()
         val quiz = Quiz.createNew(
             user = user,
             title = createQuizRequest.title,
@@ -54,8 +53,17 @@ class QuizService(
 
     @Transactional(readOnly = true)
     fun getQuiz(quizId: Long): GetQuizResponse {
-        val quiz = quizRepository.findByIdOrNull(quizId)?: throw IllegalArgumentException()
+        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw IllegalArgumentException()
         return GetQuizResponse.from(quiz)
+    }
+
+    @Transactional
+    fun deleteQuiz(requesterId: Long, quizId: Long) {
+        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw IllegalArgumentException()
+        if (!quiz.isOwner(requesterId)) {
+            throw RuntimeException("본인의 퀴즈만 삭제 할 수 있어요")
+        }
+        quiz.delete()
     }
 }
 
