@@ -12,6 +12,7 @@ data class GetQuizResponse(
         val id: Long,
         val title: String,
         val priority: Int,
+        val score: Int,
         val duplicatedOption: Boolean,
         val options: List<OptionDto>,
     ) {
@@ -21,6 +22,7 @@ data class GetQuizResponse(
                     id = question.id,
                     title = question.title,
                     priority = question.priority,
+                    score = question.score,
                     duplicatedOption = question.duplicatedOption,
                     options = question.options.map {
                         OptionDto.from(it)
