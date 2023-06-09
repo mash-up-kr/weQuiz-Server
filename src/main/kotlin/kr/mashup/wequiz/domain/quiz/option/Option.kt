@@ -1,4 +1,4 @@
-package kr.mashup.wequiz.domain.quiz.answer
+package kr.mashup.wequiz.domain.quiz.option
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne
 import kr.mashup.wequiz.domain.quiz.question.Question
 
 @Entity
-class Answer(
+class Option(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
@@ -23,21 +23,21 @@ class Answer(
     @Column(name = "priority")
     val priority: Int,
 
-    @Column(name = "correct_answer")
-    val correctAnswer: Boolean,
+    @Column(name = "is_correct")
+    val isCorrect: Boolean,
 ) {
     companion object {
         fun createNew(
             question: Question,
             content: String,
             priority: Int,
-            correctAnswer: Boolean,
-        ): Answer {
-            return Answer(
+            isCorrect: Boolean,
+        ): Option {
+            return Option(
                 question = question,
                 content = content,
                 priority = priority,
-                correctAnswer = correctAnswer,
+                isCorrect = isCorrect,
             )
         }
     }

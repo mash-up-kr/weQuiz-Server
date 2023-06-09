@@ -8,14 +8,14 @@ data class CreateQuizRequest(
 data class QuestionDto(
     val title: String,
     val priority: Int,
-    val duplicatedAnswer: Boolean,
-    val answers: List<AnswerDto>,
+    val duplicatedOption: Boolean,
+    val options: List<OptionDto>,
 )
 
-data class AnswerDto(
+data class OptionDto(
     val content: String,
     val priority: Int,
-    val correctAnswer: Boolean,
+    val isCorrect: Boolean,
 )
 
 data class CreateQuizResponse(

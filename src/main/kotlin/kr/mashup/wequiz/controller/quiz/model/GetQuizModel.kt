@@ -1,7 +1,7 @@
 package kr.mashup.wequiz.controller.quiz.model
 
 import kr.mashup.wequiz.domain.quiz.Quiz
-import kr.mashup.wequiz.domain.quiz.answer.Answer
+import kr.mashup.wequiz.domain.quiz.option.Option
 import kr.mashup.wequiz.domain.quiz.question.Question
 
 data class GetQuizResponse(
@@ -12,8 +12,8 @@ data class GetQuizResponse(
         val id: Long,
         val title: String,
         val priority: Int,
-        val duplicatedAnswer: Boolean,
-        val answers: List<AnswerDto>,
+        val duplicatedOption: Boolean,
+        val options: List<OptionDto>,
     ) {
         companion object {
             fun from(question: Question): QuestionDto {
@@ -21,28 +21,28 @@ data class GetQuizResponse(
                     id = question.id,
                     title = question.title,
                     priority = question.priority,
-                    duplicatedAnswer = question.duplicatedAnswer,
-                    answers = question.answers.map {
-                        AnswerDto.from(it)
+                    duplicatedOption = question.duplicatedOption,
+                    options = question.options.map {
+                        OptionDto.from(it)
                     },
                 )
             }
         }
     }
 
-    data class AnswerDto(
+    data class OptionDto(
         val id: Long,
         val content: String,
         val priority: Int,
-        val correctAnswer: Boolean,
+        val correctOption: Boolean,
     ) {
         companion object {
-            fun from(answer: Answer): AnswerDto {
-                return AnswerDto(
-                    id = answer.id,
-                    content = answer.content,
-                    priority = answer.priority,
-                    correctAnswer = answer.correctAnswer,
+            fun from(option: Option): OptionDto {
+                return OptionDto(
+                    id = option.id,
+                    content = option.content,
+                    priority = option.priority,
+                    correctOption = option.isCorrect,
                 )
             }
         }
