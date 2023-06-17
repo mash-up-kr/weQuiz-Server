@@ -19,6 +19,9 @@ class Question(
     @Column(name = "priority")
     val priority: Int,
 
+    @Column(name = "score")
+    val score: Int,
+
     @Column(name = "is_duplicated_Option")
     val duplicatedOption: Boolean,
 
@@ -34,12 +37,14 @@ class Question(
             quiz: Quiz,
             title: String,
             priority: Int,
+            score: Int,
             duplicatedOption: Boolean,
         ): Question {
             return Question(
                 quiz = quiz,
                 title = title,
                 priority = priority,
+                score = score,
                 duplicatedOption = duplicatedOption,
             )
         }
