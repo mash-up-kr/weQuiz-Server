@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/user")
 class UserApiController(
-    private val userService: UserService,
+    private val userService: UserService
 ) {
     @PostMapping("/join")
     fun joinUser(
-        @RequestBody joinUserRequest: JoinUserRequest,
+        @RequestBody joinUserRequest: JoinUserRequest
     ) {
         userService.join(
             token = joinUserRequest.token,
             phone = joinUserRequest.phone,
             nickname = joinUserRequest.nickname,
-            description = joinUserRequest.description,
+            description = joinUserRequest.description
         )
     }
 }
