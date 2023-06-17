@@ -53,8 +53,12 @@ x-wequiz-token: your_token_value
   ]
 }
 
-### 퀴즈 조회
+### 퀴즈 단건 조회
 GET http://{{host}}/api/v1/quiz/1
+x-wequiz-token: your_token_value
+
+### 퀴즈 리스트 조회
+GET http://{{host}}/api/v1/quiz?size=1&cursor=1
 x-wequiz-token: your_token_value
 
 ### 퀴즈 삭제

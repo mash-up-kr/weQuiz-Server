@@ -9,6 +9,7 @@ import kr.mashup.wequiz.domain.quiz.option.Option
 import kr.mashup.wequiz.domain.quiz.question.Question
 import kr.mashup.wequiz.repository.quiz.QuizRepository
 import kr.mashup.wequiz.repository.user.UserRepository
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -59,6 +60,20 @@ class QuizService(
     fun getQuiz(quizId: Long): GetQuizResponse {
         val quiz = quizRepository.findByIdOrNull(quizId) ?: throw IllegalArgumentException()
         return GetQuizResponse.from(quiz)
+    }
+
+    @Transactional(readOnly = true)
+    fun getQuizList(cursor: Long?, size: Int): List<Quiz> {
+        return if (cursor != null) {
+            quizRepository.findAllByIdBeforeAndIsDeleteIsFalseOrderByIdDesc(
+                id = cursor!!,
+                pageable = PageRequest.of(0, size)
+            )
+        } else {
+            quizRepository.findAllByIsDeleteIsFalseOrderByIdDesc(
+                pageable = PageRequest.of(0, size)
+            )
+        }
     }
 
     @Transactional
