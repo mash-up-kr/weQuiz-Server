@@ -24,20 +24,20 @@ class Option(
     val priority: Int,
 
     @Column(name = "is_correct")
-    val isCorrect: Boolean,
+    val isCorrect: Boolean
 ) {
     companion object {
         fun createNew(
             question: Question,
             content: String,
             priority: Int,
-            isCorrect: Boolean,
+            isCorrect: Boolean
         ): Option {
             return Option(
                 question = question,
                 content = content,
                 priority = priority,
-                isCorrect = isCorrect,
+                isCorrect = isCorrect
             )
         }
     }

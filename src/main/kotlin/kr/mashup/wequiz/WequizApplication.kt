@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class WequizApplication
 
 fun main(args: Array<String>) {
-	runApplication<WequizApplication>(*args)
+    runApplication<WequizApplication>(*args)
 }
