@@ -9,7 +9,7 @@ interface QuestionScoreCalculator {
 /*
  * 단순히 총 점수 / 문제 개수 형태로 점수를 계산해요.
  */
-class SimpleQuestionScoreCalculator: QuestionScoreCalculator {
+internal class SimpleQuestionScoreCalculator: QuestionScoreCalculator {
     override fun calculateScores(questions: List<QuestionDto>): List<Int> {
         val totalScore = 100
         val questionCount = questions.size
