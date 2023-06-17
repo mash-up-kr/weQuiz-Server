@@ -29,7 +29,7 @@ class User(
     val description: String,
 
     @OneToMany(mappedBy = "user")
-    val quiz: List<Quiz> = emptyList(),
+    val quiz: List<Quiz> = emptyList()
 ) {
 
     companion object {
@@ -37,13 +37,13 @@ class User(
             token: String,
             phone: String,
             nickname: String,
-            description: String,
+            description: String
         ): User {
             return User(
                 token = token,
                 phone = phone,
                 nickname = nickname,
-                description = description,
+                description = description
             )
         }
     }

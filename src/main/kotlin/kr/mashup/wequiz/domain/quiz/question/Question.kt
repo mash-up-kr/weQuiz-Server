@@ -1,6 +1,13 @@
 package kr.mashup.wequiz.domain.quiz.question
 
-import jakarta.persistence.*
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.quiz.option.Option
 
@@ -26,7 +33,7 @@ class Question(
     val duplicatedOption: Boolean,
 
     @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL])
-    val options: MutableList<Option> = mutableListOf(),
+    val options: MutableList<Option> = mutableListOf()
 ) {
     fun setOptions(Options: List<Option>) {
         this.options.addAll(Options)
@@ -42,14 +49,14 @@ class Question(
             title: String,
             priority: Int,
             score: Int,
-            duplicatedOption: Boolean,
+            duplicatedOption: Boolean
         ): Question {
             return Question(
                 quiz = quiz,
                 title = title,
                 priority = priority,
                 score = score,
-                duplicatedOption = duplicatedOption,
+                duplicatedOption = duplicatedOption
             )
         }
     }

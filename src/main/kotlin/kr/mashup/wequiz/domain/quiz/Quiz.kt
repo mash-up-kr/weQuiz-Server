@@ -1,6 +1,14 @@
 package kr.mashup.wequiz.domain.quiz
 
-import jakarta.persistence.*
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import kr.mashup.wequiz.domain.quiz.question.Question
 import kr.mashup.wequiz.domain.user.User
 
@@ -22,7 +30,7 @@ class Quiz(
     val questions: MutableList<Question> = mutableListOf(),
 
     @Column(name = "is_delete")
-    var isDelete: Boolean,
+    var isDelete: Boolean
 ) {
     fun setQuestions(questions: List<Question>) {
         this.questions.addAll(questions)
@@ -43,12 +51,12 @@ class Quiz(
     companion object {
         fun createNew(
             user: User,
-            title: String,
+            title: String
         ): Quiz {
             return Quiz(
                 user = user,
                 title = title,
-                isDelete = false,
+                isDelete = false
             )
         }
     }

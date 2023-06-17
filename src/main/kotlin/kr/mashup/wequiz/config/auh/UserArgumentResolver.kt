@@ -8,14 +8,13 @@ import org.springframework.web.context.request.NativeWebRequest
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 
-
 @Component
 class UserArgumentResolver(
-    private val userRepository: UserRepository,
+    private val userRepository: UserRepository
 ) : HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.hasParameterAnnotation(UserInfo::class.java) &&
-                parameter.parameterType == UserInfoDto::class.java
+            parameter.parameterType == UserInfoDto::class.java
     }
 
     override fun resolveArgument(

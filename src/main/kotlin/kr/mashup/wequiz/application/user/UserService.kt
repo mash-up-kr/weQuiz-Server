@@ -6,24 +6,25 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService(
-    private val userRepository: UserRepository,
+    private val userRepository: UserRepository
 ) {
     fun join(
         token: String,
         phone: String,
         nickname: String,
-        description: String,
+        description: String
     ) {
         val isExists = userRepository.existsByToken(token)
 
-        if (isExists)
+        if (isExists) {
             throw RuntimeException()
+        }
 
         val user = User.createNew(
             token = token,
             phone = phone,
             nickname = nickname,
-            description = description,
+            description = description
         )
         userRepository.save(user)
     }

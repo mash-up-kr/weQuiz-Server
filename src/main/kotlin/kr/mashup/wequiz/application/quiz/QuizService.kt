@@ -3,33 +3,32 @@ package kr.mashup.wequiz.application.quiz
 import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.GetQuizResponse
-import kr.mashup.wequiz.controller.quiz.model.QuestionDto
 import kr.mashup.wequiz.domain.quiz.QuestionScoreCalculator
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.quiz.option.Option
 import kr.mashup.wequiz.domain.quiz.question.Question
 import kr.mashup.wequiz.repository.quiz.QuizRepository
 import kr.mashup.wequiz.repository.user.UserRepository
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.InstantSource
 
 @Service
 class QuizService(
     private val userRepository: UserRepository,
     private val quizRepository: QuizRepository,
-    private val questionsScoreCalculator: QuestionScoreCalculator,
+    private val questionsScoreCalculator: QuestionScoreCalculator
 ) {
     @Transactional
     fun createQuiz(
         userInfoDto: UserInfoDto,
-        createQuizRequest: CreateQuizRequest,
+        createQuizRequest: CreateQuizRequest
     ): Quiz {
         val user = userRepository.findByIdOrNull(userInfoDto.id) ?: throw IllegalArgumentException()
         val quiz = Quiz.createNew(
             user = user,
-            title = createQuizRequest.title,
+            title = createQuizRequest.title
         )
 
         val scores = questionsScoreCalculator.calculateScores(createQuizRequest.questions)
@@ -39,7 +38,7 @@ class QuizService(
                 title = questionDto.title,
                 priority = questionDto.priority,
                 score = scores[index],
-                duplicatedOption = questionDto.duplicatedOption,
+                duplicatedOption = questionDto.duplicatedOption
             )
 
             val options = questionDto.options.map { optionDto ->
@@ -47,7 +46,7 @@ class QuizService(
                     question = question,
                     content = optionDto.content,
                     priority = optionDto.priority,
-                    isCorrect = optionDto.isCorrect,
+                    isCorrect = optionDto.isCorrect
                 )
             }
             question.also { it.setOptions(options) }
@@ -63,6 +62,20 @@ class QuizService(
         return GetQuizResponse.from(quiz)
     }
 
+    @Transactional(readOnly = true)
+    fun getQuizList(cursor: Long?, size: Int): List<Quiz> {
+        return if (cursor != null) {
+            quizRepository.findAllByIdBeforeAndIsDeleteIsFalseOrderByIdDesc(
+                id = cursor!!,
+                pageable = PageRequest.of(0, size)
+            )
+        } else {
+            quizRepository.findAllByIsDeleteIsFalseOrderByIdDesc(
+                pageable = PageRequest.of(0, size)
+            )
+        }
+    }
+
     @Transactional
     fun deleteQuiz(requesterId: Long, quizId: Long) {
         val quiz = quizRepository.findByIdOrNull(quizId) ?: throw IllegalArgumentException()
@@ -72,4 +85,3 @@ class QuizService(
         quiz.delete()
     }
 }
-
