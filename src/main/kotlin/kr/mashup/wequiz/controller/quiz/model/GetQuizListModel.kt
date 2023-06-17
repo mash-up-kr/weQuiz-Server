@@ -1,14 +1,15 @@
+// ktlint-disable filename
 package kr.mashup.wequiz.controller.quiz.model
 
 import kr.mashup.wequiz.domain.quiz.Quiz
 
 data class GetQuizListResponse(
     val quiz: List<QuizDto>,
-    val nextCursor: Long?,
+    val nextCursor: Long?
 ) {
     data class QuizDto(
         val id: Long,
-        val title: String,
+        val title: String
     )
 
     companion object {
@@ -17,7 +18,7 @@ data class GetQuizListResponse(
                 quiz = quizList.map {
                     QuizDto(
                         id = it.id,
-                        title = it.title,
+                        title = it.title
                     )
                 },
                 nextCursor = quizList.lastOrNull()?.id

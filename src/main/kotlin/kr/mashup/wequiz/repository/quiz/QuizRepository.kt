@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface QuizRepository : JpaRepository<Quiz, Long> {
     fun findAllByIsDeleteIsFalseOrderByIdDesc(
-        pageable: Pageable,
+        pageable: Pageable
     ): List<Quiz>
 
     fun findAllByIdBeforeAndIsDeleteIsFalseOrderByIdDesc(
         id: Long,
-        pageable: Pageable,
+        pageable: Pageable
     ): List<Quiz>
 }
