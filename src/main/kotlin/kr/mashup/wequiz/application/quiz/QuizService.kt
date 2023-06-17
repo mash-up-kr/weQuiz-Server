@@ -3,6 +3,8 @@ package kr.mashup.wequiz.application.quiz
 import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.GetQuizResponse
+import kr.mashup.wequiz.controller.quiz.model.QuestionDto
+import kr.mashup.wequiz.domain.quiz.QuestionScoreCalculator
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.quiz.option.Option
 import kr.mashup.wequiz.domain.quiz.question.Question
@@ -11,11 +13,13 @@ import kr.mashup.wequiz.repository.user.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.InstantSource
 
 @Service
 class QuizService(
     private val userRepository: UserRepository,
     private val quizRepository: QuizRepository,
+    private val questionsScoreCalculator: QuestionScoreCalculator,
 ) {
     @Transactional
     fun createQuiz(
@@ -28,11 +32,13 @@ class QuizService(
             title = createQuizRequest.title,
         )
 
-        val questions = createQuizRequest.questions.map { questionDto ->
+        val scores = questionsScoreCalculator.calculateScores(createQuizRequest.questions)
+        val questions = createQuizRequest.questions.mapIndexed { index, questionDto ->
             val question = Question.createNew(
                 quiz = quiz,
                 title = questionDto.title,
                 priority = questionDto.priority,
+                score = scores[index],
                 duplicatedOption = questionDto.duplicatedOption,
             )
 
