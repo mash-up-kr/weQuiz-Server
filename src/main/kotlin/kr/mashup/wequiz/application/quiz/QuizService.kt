@@ -3,6 +3,7 @@ package kr.mashup.wequiz.application.quiz
 import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.GetQuizResponse
+import kr.mashup.wequiz.domain.quiz.QuestionScoreCalculator
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.quiz.option.Option
 import kr.mashup.wequiz.domain.quiz.question.Question
@@ -18,24 +19,27 @@ import java.awt.Cursor
 class QuizService(
     private val userRepository: UserRepository,
     private val quizRepository: QuizRepository,
+    private val questionsScoreCalculator: QuestionScoreCalculator
 ) {
     @Transactional
     fun createQuiz(
         userInfoDto: UserInfoDto,
-        createQuizRequest: CreateQuizRequest,
+        createQuizRequest: CreateQuizRequest
     ): Quiz {
         val user = userRepository.findByIdOrNull(userInfoDto.id) ?: throw IllegalArgumentException()
         val quiz = Quiz.createNew(
             user = user,
-            title = createQuizRequest.title,
+            title = createQuizRequest.title
         )
 
-        val questions = createQuizRequest.questions.map { questionDto ->
+        val scores = questionsScoreCalculator.calculateScores(createQuizRequest.questions)
+        val questions = createQuizRequest.questions.mapIndexed { index, questionDto ->
             val question = Question.createNew(
                 quiz = quiz,
                 title = questionDto.title,
                 priority = questionDto.priority,
-                duplicatedOption = questionDto.duplicatedOption,
+                score = scores[index],
+                duplicatedOption = questionDto.duplicatedOption
             )
 
             val options = questionDto.options.map { optionDto ->
@@ -43,7 +47,7 @@ class QuizService(
                     question = question,
                     content = optionDto.content,
                     priority = optionDto.priority,
-                    isCorrect = optionDto.isCorrect,
+                    isCorrect = optionDto.isCorrect
                 )
             }
             question.also { it.setOptions(options) }
@@ -82,4 +86,3 @@ class QuizService(
         quiz.delete()
     }
 }
-

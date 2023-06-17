@@ -1,3 +1,4 @@
+// ktlint-disable filename
 package kr.mashup.wequiz.controller.quiz.model
 
 import kr.mashup.wequiz.domain.quiz.Quiz
@@ -12,8 +13,9 @@ data class GetQuizResponse(
         val id: Long,
         val title: String,
         val priority: Int,
+        val score: Int,
         val duplicatedOption: Boolean,
-        val options: List<OptionDto>,
+        val options: List<OptionDto>
     ) {
         companion object {
             fun from(question: Question): QuestionDto {
@@ -21,10 +23,11 @@ data class GetQuizResponse(
                     id = question.id,
                     title = question.title,
                     priority = question.priority,
+                    score = question.score,
                     duplicatedOption = question.duplicatedOption,
                     options = question.options.map {
                         OptionDto.from(it)
-                    },
+                    }
                 )
             }
         }
@@ -34,7 +37,7 @@ data class GetQuizResponse(
         val id: Long,
         val content: String,
         val priority: Int,
-        val correctOption: Boolean,
+        val correctOption: Boolean
     ) {
         companion object {
             fun from(option: Option): OptionDto {
@@ -42,7 +45,7 @@ data class GetQuizResponse(
                     id = option.id,
                     content = option.content,
                     priority = option.priority,
-                    correctOption = option.isCorrect,
+                    correctOption = option.isCorrect
                 )
             }
         }
@@ -54,7 +57,7 @@ data class GetQuizResponse(
                 title = quiz.title,
                 questions = quiz.questions.map {
                     QuestionDto.from(it)
-                },
+                }
             )
         }
     }
