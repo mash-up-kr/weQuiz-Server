@@ -1,10 +1,14 @@
 package kr.mashup.wequiz.domain.statistic
 
-import kr.mashup.wequiz.domain.answer.QuestionAnswer
 import kr.mashup.wequiz.domain.quiz.question.Question
 
 class QuestionStatistic(
     private val question: Question,
-    private val questionAnswer: QuestionAnswer,
+    private val optionStatistics: List<OptionStatistic>
 ) {
+    val questionId: Long = question.id
+
+    val questionTitle: String = question.title
+
+    val options = optionStatistics
 }
