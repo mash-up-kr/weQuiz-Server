@@ -10,13 +10,14 @@ import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-
 @OpenAPIDefinition(
     info = Info(title = "WeQuiz API", description = "토큰 발급 후 사용 하시기 바랍니다.")
 )
 @SecurityScheme(
-    type = SecuritySchemeType.APIKEY, `in` = SecuritySchemeIn.HEADER,
-    name = "x-wequiz-token", description = "Auth Token",
+    type = SecuritySchemeType.APIKEY,
+    `in` = SecuritySchemeIn.HEADER,
+    name = "x-wequiz-token",
+    description = "Auth Token"
 )
 @Configuration
 class SwaggerConfig {
@@ -28,7 +29,7 @@ class SwaggerConfig {
             .addOpenApiCustomizer {
                 it.security(
                     listOf(
-                        SecurityRequirement().addList(TOKEN_NAME),
+                        SecurityRequirement().addList(TOKEN_NAME)
                     )
                 )
             }
