@@ -21,6 +21,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
+    implementation("org.hibernate:hibernate-validator:8.0.0.Final")
+
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
+
     // devtools
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")

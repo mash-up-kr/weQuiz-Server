@@ -1,5 +1,8 @@
 package kr.mashup.wequiz.controller.quiz
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.tags.Tag
 import kr.mashup.wequiz.application.quiz.QuizService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
@@ -17,30 +20,39 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "퀴즈 API", description = "QuizApiController")
 @RestController
 @RequestMapping("/api/v1/quiz")
 class QuizApiController(
     private val quizService: QuizService
 ) {
+    @Operation(summary = "퀴즈 생성")
     @PostMapping
     fun createQuiz(
-        @UserInfo userInfoDto: UserInfoDto,
+        @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @RequestBody createQuizRequest: CreateQuizRequest
     ): CreateQuizResponse {
         return CreateQuizResponse(quizId = quizService.createQuiz(userInfoDto, createQuizRequest).id)
     }
 
+    @Operation(summary = "퀴즈 단건 조회")
     @GetMapping("/{quizId}")
     fun getQuiz(
-        @UserInfo userInfoDto: UserInfoDto,
+        @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
     ): GetQuizResponse {
         return quizService.getQuiz(quizId)
     }
 
+    @Operation(
+        summary = "퀴즈 리스트 조회 (커서 페이징)",
+        description = "- size 는 default 15 \n " +
+                "- cursor 를 넘기지 않으면 첫 페이지 \n " +
+                "- nextCursor 를 다시 넣어서 조회"
+    )
     @GetMapping
     fun getQuizList(
-        @UserInfo userInfoDto: UserInfoDto,
+        @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @RequestParam size: Int = 15,
         @RequestParam cursor: Long? = null
     ): GetQuizListResponse {
@@ -48,9 +60,10 @@ class QuizApiController(
         return GetQuizListResponse.from(quizList)
     }
 
+    @Operation(summary = "퀴즈 삭제")
     @DeleteMapping("/{quizId}")
     fun deleteQuiz(
-        @UserInfo userInfoDto: UserInfoDto,
+        @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
     ): DeleteQuizResponse {
         quizService.deleteQuiz(
