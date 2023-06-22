@@ -27,8 +27,7 @@ class UserArgumentResolver(
         val user = userRepository.findByToken(token) ?: throw RuntimeException() // TODO 403 에러
 
         return UserInfoDto(
-            id = user.id,
-            name = user.nickname
+            id = user.id
         )
     }
 }
