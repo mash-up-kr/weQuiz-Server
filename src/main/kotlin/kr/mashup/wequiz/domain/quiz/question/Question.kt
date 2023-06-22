@@ -39,6 +39,10 @@ class Question(
         this.options.addAll(Options)
     }
 
+    fun findOption(optionId: Long): Option? {
+        return options.find { it.id == optionId }
+    }
+
     companion object {
         fun createNew(
             quiz: Quiz,
