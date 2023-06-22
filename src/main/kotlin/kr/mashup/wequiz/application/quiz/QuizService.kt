@@ -63,14 +63,16 @@ class QuizService(
     }
 
     @Transactional(readOnly = true)
-    fun getQuizList(cursor: Long?, size: Int): List<Quiz> {
+    fun getQuizList(userId: Long, cursor: Long?, size: Int): List<Quiz> {
         return if (cursor != null) {
-            quizRepository.findAllByIdBeforeAndIsDeleteIsFalseOrderByIdDesc(
-                id = cursor!!,
+            quizRepository.findAllByIdAndUserIdBeforeAndIsDeleteIsFalseOrderByIdDesc(
+                id = cursor,
+                userId = userId,
                 pageable = PageRequest.of(0, size)
             )
         } else {
-            quizRepository.findAllByIsDeleteIsFalseOrderByIdDesc(
+            quizRepository.findAllByUserIdAndIsDeleteIsFalseOrderByIdDesc(
+                userId = userId,
                 pageable = PageRequest.of(0, size)
             )
         }
