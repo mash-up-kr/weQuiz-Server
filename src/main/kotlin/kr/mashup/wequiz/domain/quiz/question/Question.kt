@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.quiz.option.Option
+import kr.mashup.wequiz.lib.toInt
 
 @Entity
 class Question(
@@ -35,8 +36,11 @@ class Question(
     @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL])
     val options: MutableList<Option> = mutableListOf()
 ) {
-    fun setOptions(Options: List<Option>) {
-        this.options.addAll(Options)
+
+    val answersCount = options.sumOf { it.isCorrect.toInt() }
+
+    fun setOptions(options: List<Option>) {
+        this.options.addAll(options)
     }
 
     fun findOption(optionId: Long): Option? {
