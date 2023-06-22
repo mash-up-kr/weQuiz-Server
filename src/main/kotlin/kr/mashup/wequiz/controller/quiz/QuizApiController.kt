@@ -56,7 +56,7 @@ class QuizApiController(
         @RequestParam size: Int = 15,
         @RequestParam cursor: Long? = null
     ): GetQuizListResponse {
-        val quizList = quizService.getQuizList(cursor, size)
+        val quizList = quizService.getQuizList(userInfoDto.id, cursor, size)
         return GetQuizListResponse.from(quizList)
     }
 
