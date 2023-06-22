@@ -5,12 +5,14 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface QuizRepository : JpaRepository<Quiz, Long> {
-    fun findAllByIsDeleteIsFalseOrderByIdDesc(
+    fun findAllByUserIdAndIsDeleteIsFalseOrderByIdDesc(
+        userId: Long,
         pageable: Pageable
     ): List<Quiz>
 
-    fun findAllByIdBeforeAndIsDeleteIsFalseOrderByIdDesc(
+    fun findAllByIdAndUserIdBeforeAndIsDeleteIsFalseOrderByIdDesc(
         id: Long,
+        userId: Long,
         pageable: Pageable
     ): List<Quiz>
 }
