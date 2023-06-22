@@ -25,8 +25,6 @@ class QuestionAnswer(
     val user: User
 ) {
 
-    fun calculateScore() = if (option.isCorrect) question.score else 0
-
     companion object {
         private fun createNew(
             user: User,
