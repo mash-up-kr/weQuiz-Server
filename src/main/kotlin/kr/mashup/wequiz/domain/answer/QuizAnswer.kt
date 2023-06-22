@@ -1,11 +1,6 @@
 package kr.mashup.wequiz.domain.answer
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.*
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.user.User
 
@@ -19,20 +14,26 @@ class QuizAnswer(
     val quiz: Quiz,
 
     @Column(name = "total_score")
-    val totalScore: Int,
+    var totalScore: Int = 0,
 
     @ManyToOne
-    val user: User
+    val user: User,
+
+    @OneToMany(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "quiz_answer_id")
+    val questionAnswers: MutableList<QuestionAnswer> = mutableListOf(),
 ) {
+    fun setQuestionAnswers(questionAnswers: List<QuestionAnswer>) {
+        this.questionAnswers.addAll(questionAnswers)
+    }
+
     companion object {
         fun createNew(
             user: User,
             quiz: Quiz,
-            totalScore: Int
         ) = QuizAnswer(
             user = user,
             quiz = quiz,
-            totalScore = totalScore
         )
     }
 }

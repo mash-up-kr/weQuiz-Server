@@ -17,10 +17,8 @@ class AnswerService(
     private val userRepository: UserRepository,
     private val quizRepository: QuizRepository,
     private val quizAnswerRepository: QuizAnswerRepository,
-    private val questionAnswerRepository: QuestionAnswerRepository,
     private val questionAnswerScoreCalculator: QuestionAnswerScoreCalculator
 ) {
-
     @Transactional
     fun create(
         userInfo: UserInfoDto,
@@ -29,6 +27,11 @@ class AnswerService(
     ): QuizAnswer {
         val user = userRepository.findByIdOrNull(userInfo.id) ?: throw IllegalArgumentException("유저를 찾을 수 없어요.")
         val quiz = quizRepository.findByIdOrNull(quizId) ?: throw IllegalArgumentException("퀴즈를 찾을 수 없어요.")
+
+        val quizAnswer = QuizAnswer.createNew(
+            user = user,
+            quiz = quiz,
+        )
 
         val totalScore = answers.sumOf { answer ->
             val question = quiz.findQuestion(answer.questionId) ?: throw IllegalArgumentException("문제를 찾을 수 없어요.")
@@ -39,18 +42,16 @@ class AnswerService(
             val questionAnswers = QuestionAnswer.createNew(
                 user = user,
                 question = question,
-                options = options
+                options = options,
+                quizAnswer = quizAnswer,
             )
 
-            questionAnswers.forEach(questionAnswerRepository::save)
+            quizAnswer.setQuestionAnswers(questionAnswers)
             questionAnswerScoreCalculator.calculateScore(questionAnswers)
         }
 
-        val quizAnswer = QuizAnswer.createNew(
-            user = user,
-            quiz = quiz,
-            totalScore = totalScore
-        )
+        quizAnswer.totalScore = totalScore
+
         return quizAnswerRepository.save(quizAnswer)
     }
 }

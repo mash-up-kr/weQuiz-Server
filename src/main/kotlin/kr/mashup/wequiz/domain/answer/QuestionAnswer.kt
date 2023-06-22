@@ -22,24 +22,30 @@ class QuestionAnswer(
     val option: Option,
 
     @ManyToOne
-    val user: User
+    val user: User,
+
+    @ManyToOne
+    val quizAnswer: QuizAnswer,
 ) {
 
     companion object {
         private fun createNew(
             user: User,
             question: Question,
-            option: Option
+            option: Option,
+            quizAnswer: QuizAnswer,
         ) = QuestionAnswer(
             user = user,
             question = question,
-            option = option
+            option = option,
+            quizAnswer = quizAnswer,
         )
 
         fun createNew(
             user: User,
             question: Question,
-            options: List<Option>
-        ) = options.map { createNew(user, question, it) }
+            options: List<Option>,
+            quizAnswer: QuizAnswer,
+        ) = options.map { createNew(user, question, it, quizAnswer) }
     }
 }
