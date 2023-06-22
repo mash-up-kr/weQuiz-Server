@@ -47,8 +47,8 @@ class QuizApiController(
     @Operation(
         summary = "퀴즈 리스트 조회 (커서 페이징)",
         description = "- size 는 default 15 \n " +
-                "- cursor 를 넘기지 않으면 첫 페이지 \n " +
-                "- nextCursor 를 다시 넣어서 조회"
+            "- cursor 를 넘기지 않으면 첫 페이지 \n " +
+            "- nextCursor 를 다시 넣어서 조회"
     )
     @GetMapping
     fun getQuizList(
