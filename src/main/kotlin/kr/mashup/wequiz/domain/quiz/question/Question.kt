@@ -47,8 +47,9 @@ class Question(
     val deletedAt: LocalDateTime? = null
 ) {
 
-    @jakarta.persistence.Transient
-    val answersCount = options.sumOf { it.isCorrect.toInt() }
+    fun getAnswersCount(): Int {
+        return options.sumOf { it.isCorrect.toInt() }
+    }
 
     fun setOptions(options: List<Option>) {
         this.options.addAll(options)

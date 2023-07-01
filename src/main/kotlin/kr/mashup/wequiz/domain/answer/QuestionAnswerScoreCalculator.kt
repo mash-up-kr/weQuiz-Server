@@ -8,7 +8,8 @@ internal class StandardQuestionAnswerScoreCalculator : QuestionAnswerScoreCalcul
     override fun calculateScore(questionAnswers: List<QuestionAnswer>): Int {
         if (questionAnswers.isEmpty()) return 0
         val question = questionAnswers.first().question
-        val answersCount = question.answersCount
+        val answersCount = question.getAnswersCount()
+
         val correctAnswersCount = questionAnswers.count { it.option.isCorrect }
 
         return if (answersCount == correctAnswersCount) {
