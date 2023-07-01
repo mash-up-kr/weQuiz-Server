@@ -21,11 +21,11 @@ data class QuizView(
                             OptionView(
                                 id = option.id,
                                 priority = option.priority,
-                                content = option.content,
+                                content = option.content
                             )
-                        },
+                        }
                     )
-                },
+                }
             )
         }
     }
@@ -35,11 +35,11 @@ data class QuestionView(
     val id: Long,
     val priority: Int,
     val title: String,
-    val options: List<OptionView>,
+    val options: List<OptionView>
 )
 
 data class OptionView(
     val id: Long,
     val priority: Int,
-    val content: String,
+    val content: String
 )

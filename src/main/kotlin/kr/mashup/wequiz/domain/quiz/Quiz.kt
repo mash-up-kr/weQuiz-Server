@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import kr.mashup.wequiz.domain.quiz.question.Question
 import kr.mashup.wequiz.domain.user.User
+import java.time.LocalDateTime
 
 @Entity
 class Quiz(
@@ -30,7 +31,16 @@ class Quiz(
     val questions: MutableList<Question> = mutableListOf(),
 
     @Column(name = "is_delete")
-    var isDelete: Boolean
+    var isDelete: Boolean,
+
+    @Column(name = "created_at")
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "updated_at")
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "deleted_at")
+    val deletedAt: LocalDateTime? = null
 ) {
     fun setQuestions(questions: List<Question>) {
         this.questions.addAll(questions)

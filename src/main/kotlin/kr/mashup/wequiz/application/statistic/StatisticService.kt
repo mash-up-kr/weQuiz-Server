@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class StatisticService(
     private val quizRepository: QuizRepository,
-    private val quizAnswerRepository: QuizAnswerRepository,
+    private val quizAnswerRepository: QuizAnswerRepository
 ) {
     @Transactional(readOnly = true)
     fun getStatistic(quizId: Long): QuizStatistic {

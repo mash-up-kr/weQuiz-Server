@@ -1,10 +1,11 @@
+// ktlint-disable filename
 package kr.mashup.wequiz.controller.statistic.model
 
 import kr.mashup.wequiz.domain.statistic.QuizStatistic
 
 data class GetQuizStatisticResponse(
     val quizInfo: QuizInfo,
-    val statistic: List<QuestionStatisticDto>,
+    val statistic: List<QuestionStatisticDto>
 ) {
     companion object {
         fun from(quizStatistic: QuizStatistic): GetQuizStatisticResponse {
@@ -19,11 +20,11 @@ data class GetQuizStatisticResponse(
                             options = question.options.map { option ->
                                 OptionDto(
                                     optionId = option.id,
-                                    content = option.content,
+                                    content = option.content
                                 )
                             }
                         )
-                    },
+                    }
                 ),
                 statistic = quizStatistic.statistic.map { question ->
                     QuestionStatisticDto(
@@ -31,7 +32,7 @@ data class GetQuizStatisticResponse(
                         options = question.options.map { option ->
                             OptionStatisticDto(
                                 optionId = option.optionId,
-                                selectivity = option.selectivity,
+                                selectivity = option.selectivity
                             )
                         }
                     )
@@ -43,18 +44,18 @@ data class GetQuizStatisticResponse(
     data class QuizInfo(
         val quizId: Long,
         val quizTitle: String,
-        val questions: List<QuestionDto>,
+        val questions: List<QuestionDto>
     )
 
     data class QuestionDto(
         val questionId: Long,
         val questionTitle: String,
-        val options: List<OptionDto>,
+        val options: List<OptionDto>
     )
 
     data class OptionDto(
         val optionId: Long,
-        val content: String,
+        val content: String
     )
 
     data class QuestionStatisticDto(
@@ -64,6 +65,6 @@ data class GetQuizStatisticResponse(
 
     data class OptionStatisticDto(
         val optionId: Long,
-        val selectivity: Float,
+        val selectivity: Float
     )
 }
