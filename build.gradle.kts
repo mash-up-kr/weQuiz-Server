@@ -46,7 +46,7 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.withType<Jar>() {
+tasks.getByName<Jar>("jar") {
     enabled = false
 }
 
