@@ -30,24 +30,24 @@ class Quiz(
     @JoinColumn(name = "quiz_id")
     val questions: MutableList<Question> = mutableListOf(),
 
-    @Column(name = "is_delete")
-    var isDelete: Boolean,
-
     @Column(name = "created_at")
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "updated_at")
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "deleted_at")
-    val deletedAt: LocalDateTime? = null
+    var deletedAt: LocalDateTime? = null
 ) {
+
+    val isDelete = lazy { deletedAt != null }
+
     fun setQuestions(questions: List<Question>) {
         this.questions.addAll(questions)
     }
 
     fun delete() {
-        isDelete = true
+        this.deletedAt = LocalDateTime.now()
     }
 
     fun isOwner(userId: Long): Boolean {
@@ -65,8 +65,7 @@ class Quiz(
         ): Quiz {
             return Quiz(
                 user = user,
-                title = title,
-                isDelete = false
+                title = title
             )
         }
     }
