@@ -40,7 +40,7 @@ class Quiz(
     var deletedAt: LocalDateTime? = null
 ) {
 
-    val isDelete = lazy { deletedAt != null }
+    val isDelete: Boolean = deletedAt != null
 
     fun setQuestions(questions: List<Question>) {
         this.questions.addAll(questions)
