@@ -2,12 +2,11 @@ package kr.mashup.wequiz.domain.statistic
 
 import kr.mashup.wequiz.domain.answer.QuizAnswer
 import kr.mashup.wequiz.domain.quiz.Quiz
-import kr.mashup.wequiz.domain.quiz.question.Question
 import kr.mashup.wequiz.domain.quiz.view.QuizView
 
 class QuizStatistic(
     private val quiz: Quiz,
-    private val answers: List<QuizAnswer>,
+    private val answers: List<QuizAnswer>
 ) {
     val quizView: QuizView = QuizView.from(quiz)
 

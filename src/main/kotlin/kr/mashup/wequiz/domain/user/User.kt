@@ -8,6 +8,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import kr.mashup.wequiz.domain.quiz.Quiz
+import java.time.LocalDateTime
 
 @Table(name = "users")
 @Entity
@@ -29,7 +30,16 @@ class User(
     val description: String,
 
     @OneToMany(mappedBy = "user")
-    val quiz: List<Quiz> = emptyList()
+    val quiz: List<Quiz> = emptyList(),
+
+    @Column(name = "created_at")
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "updated_at")
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "deleted_at")
+    val deletedAt: LocalDateTime? = null
 ) {
 
     companion object {

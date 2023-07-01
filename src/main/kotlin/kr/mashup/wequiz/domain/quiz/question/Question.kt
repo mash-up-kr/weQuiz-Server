@@ -11,6 +11,7 @@ import jakarta.persistence.OneToMany
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.quiz.option.Option
 import kr.mashup.wequiz.lib.toInt
+import java.time.LocalDateTime
 
 @Entity
 class Question(
@@ -34,7 +35,16 @@ class Question(
     val duplicatedOption: Boolean,
 
     @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL])
-    val options: MutableList<Option> = mutableListOf()
+    val options: MutableList<Option> = mutableListOf(),
+
+    @Column(name = "created_at")
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "updated_at")
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "deleted_at")
+    val deletedAt: LocalDateTime? = null
 ) {
 
     val answersCount = options.sumOf { it.isCorrect.toInt() }

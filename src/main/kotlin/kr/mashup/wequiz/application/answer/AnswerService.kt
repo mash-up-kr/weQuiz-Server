@@ -4,7 +4,6 @@ import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.domain.answer.QuestionAnswer
 import kr.mashup.wequiz.domain.answer.QuestionAnswerScoreCalculator
 import kr.mashup.wequiz.domain.answer.QuizAnswer
-import kr.mashup.wequiz.repository.answer.QuestionAnswerRepository
 import kr.mashup.wequiz.repository.answer.QuizAnswerRepository
 import kr.mashup.wequiz.repository.quiz.QuizRepository
 import kr.mashup.wequiz.repository.user.UserRepository
@@ -30,7 +29,7 @@ class AnswerService(
 
         val quizAnswer = QuizAnswer.createNew(
             user = user,
-            quiz = quiz,
+            quiz = quiz
         )
 
         val totalScore = answers.sumOf { answer ->
@@ -43,7 +42,7 @@ class AnswerService(
                 user = user,
                 question = question,
                 options = options,
-                quizAnswer = quizAnswer,
+                quizAnswer = quizAnswer
             )
 
             quizAnswer.setQuestionAnswers(questionAnswers)

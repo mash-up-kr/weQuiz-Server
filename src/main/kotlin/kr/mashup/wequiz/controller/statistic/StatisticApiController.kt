@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/statistic")
 class StatisticApiController(
-    private val statisticService: StatisticService,
+    private val statisticService: StatisticService
 ) {
     @Operation(summary = "퀴즈 통계")
     @GetMapping("/quiz/{quizId}")
