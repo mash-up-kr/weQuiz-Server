@@ -8,7 +8,5 @@ class QuestionStatistic(
 ) {
     val questionId: Long = question.id
 
-    val questionTitle: String = question.title
-
     val options = optionStatistics
 }

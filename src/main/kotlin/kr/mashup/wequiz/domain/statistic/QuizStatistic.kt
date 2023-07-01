@@ -2,16 +2,16 @@ package kr.mashup.wequiz.domain.statistic
 
 import kr.mashup.wequiz.domain.answer.QuizAnswer
 import kr.mashup.wequiz.domain.quiz.Quiz
+import kr.mashup.wequiz.domain.quiz.question.Question
+import kr.mashup.wequiz.domain.quiz.view.QuizView
 
 class QuizStatistic(
     private val quiz: Quiz,
     private val answers: List<QuizAnswer>,
 ) {
-    val quizId: Long = quiz.id
+    val quizView: QuizView = QuizView.from(quiz)
 
-    val quizTitle: String = quiz.title
-
-    val questions: List<QuestionStatistic> = answers.map { it.questionAnswers }.flatten()
+    val statistic: List<QuestionStatistic> = answers.map { it.questionAnswers }.flatten()
         .groupBy { it.question }
         .mapValues { (_, value) ->
             value.groupBy { it.option }

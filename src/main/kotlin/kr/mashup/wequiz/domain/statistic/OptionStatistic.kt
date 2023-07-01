@@ -9,7 +9,5 @@ class OptionStatistic(
 ) {
     val optionId: Long = option.id
 
-    val content: String = option.content
-
-    val selectivity: Float = (optionSelectCount / questionTotalAnswerCount).toFloat()
+    val selectivity: Float = (optionSelectCount / questionTotalAnswerCount.toFloat())
 }
