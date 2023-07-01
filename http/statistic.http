@@ -1,0 +1,3 @@
+### 퀴즈 통계
+GET http://{{host}}/api/v1/statistic/quiz/1
+x-wequiz-token: your_token_value
