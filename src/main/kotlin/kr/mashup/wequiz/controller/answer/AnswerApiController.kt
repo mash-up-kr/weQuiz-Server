@@ -27,11 +27,12 @@ class AnswerApiController(
         @PathVariable quizId: Long,
         @RequestBody createAnswerForm: CreateAnswerForm
     ): CreateAnswerResponse {
-        val quizAnswer = answerService.create(
-            userInfo = userInfoDto,
-            quizId = quizId,
-            answers = createAnswerForm.answers
-        )
+        val quizAnswer = answerService
+            .create(
+                userInfo = userInfoDto,
+                quizId = quizId,
+                answers = createAnswerForm.answers
+            )
 
         return CreateAnswerResponse(
             quizCreator = UserInfoDto.from(quizAnswer.quiz.user),
