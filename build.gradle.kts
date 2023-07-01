@@ -46,6 +46,10 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+tasks.withType<Jar>() {
+    enabled = false
+}
+
 allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.MappedSuperclass")
