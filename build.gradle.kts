@@ -23,6 +23,10 @@ dependencies {
 
     implementation("org.hibernate:hibernate-validator:8.0.0.Final")
 
+    // logging
+    implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
+
+    // swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
 
     // devtools
