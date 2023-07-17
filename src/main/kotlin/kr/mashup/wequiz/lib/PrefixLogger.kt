@@ -1,10 +1,11 @@
+// ktlint-disable filename
 package kr.mashup.wequiz.lib
 
 import mu.KotlinLogging
 
 open class PrefixLogger(
     private val prefix: String,
-    func: () -> Unit,
+    func: () -> Unit
 ) {
     private val kLogger = KotlinLogging.logger(func)
     fun info(msg: () -> Any?) {
@@ -36,5 +37,4 @@ open class PrefixLogger(
             "$prefix ${msg()}"
         }
     }
-
 }
