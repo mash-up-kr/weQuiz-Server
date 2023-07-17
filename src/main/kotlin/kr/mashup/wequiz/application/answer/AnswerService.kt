@@ -4,6 +4,8 @@ import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.domain.answer.QuestionAnswer
 import kr.mashup.wequiz.domain.answer.QuestionAnswerScoreCalculator
 import kr.mashup.wequiz.domain.answer.QuizAnswer
+import kr.mashup.wequiz.repository.answer.QuestionAnswerRepository
+import kr.mashup.wequiz.repository.answer.QuizAnswerQueryRepository
 import kr.mashup.wequiz.repository.answer.QuizAnswerRepository
 import kr.mashup.wequiz.repository.quiz.QuizRepository
 import kr.mashup.wequiz.repository.user.UserRepository
@@ -16,6 +18,8 @@ class AnswerService(
     private val userRepository: UserRepository,
     private val quizRepository: QuizRepository,
     private val quizAnswerRepository: QuizAnswerRepository,
+    private val quizAnswerQueryRepository: QuizAnswerQueryRepository,
+    private val questionAnswerRepository: QuestionAnswerRepository,
     private val questionAnswerScoreCalculator: QuestionAnswerScoreCalculator
 ) {
     @Transactional
@@ -58,4 +62,18 @@ class AnswerService(
 data class AnswersDto(
     val questionId: Long,
     val optionIds: List<Long>
+)
+
+data class QuizAnswerRankingDto(
+    val userId: Long,
+    val nickname: String,
+    val totalScore: Int,
+    val quizAnswerId: Long
+)
+
+fun QuizAnswer.toRankingDto() = QuizAnswerRankingDto(
+    userId = this.user.id,
+    nickname = this.user.nickname,
+    totalScore = this.totalScore,
+    quizAnswerId = this.id
 )
