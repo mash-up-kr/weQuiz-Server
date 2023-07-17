@@ -42,7 +42,7 @@ class RankingApiController(
         )
     }
 
-    @Operation(summary = "퀴즈 단건 랭킹")
+    @Operation(summary = "퀴즈 단건의 랭킹")
     @GetMapping("/quiz/{quizId}")
     fun getQuizAnswerRanking(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
