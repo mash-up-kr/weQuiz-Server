@@ -1,6 +1,8 @@
 package kr.mashup.wequiz.controller.ranking
 
+import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.tags.Tag
 import kr.mashup.wequiz.application.answer.QuizAnswerRankingDto
 import kr.mashup.wequiz.application.ranking.QuizRankingService
 import kr.mashup.wequiz.config.auh.UserInfo
@@ -11,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+@Tag(name = "랭킹 API", description = "RankingApiController")
 @RestController
 @RequestMapping("/api/v1/ranking")
 class RankingApiController(
     private val rankingService: QuizRankingService
 ) {
 
+    @Operation(summary = "내가 만든 퀴즈들의 총 합 랭킹")
     @GetMapping("/my-quiz")
     fun getMyQuizAnswerRanking(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
@@ -38,6 +42,7 @@ class RankingApiController(
         )
     }
 
+    @Operation(summary = "퀴즈 단건 랭킹")
     @GetMapping("/quiz/{quizId}")
     fun getQuizAnswerRanking(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
