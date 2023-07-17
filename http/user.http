@@ -9,3 +9,8 @@ x-wequiz-token: your_token_value
   "nickname": "your_nickname",
   "description": "your_description"
 }
+
+### 내 정보 불러오기
+GET http://{{host}}/api/v1/user
+Content-Type: application/json
+x-wequiz-token: your_token_value
