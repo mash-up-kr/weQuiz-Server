@@ -12,9 +12,9 @@ data class GetQuizResponse(
     data class QuestionDto(
         val id: Long,
         val title: String,
-        val priority: Int,
+        val order: Int,
         val score: Int,
-        val duplicatedOption: Boolean,
+        val answerCounts: Int,
         val options: List<OptionDto>
     ) {
         companion object {
@@ -22,9 +22,9 @@ data class GetQuizResponse(
                 return QuestionDto(
                     id = question.id,
                     title = question.title,
-                    priority = question.priority,
+                    order = question.priority,
                     score = question.score,
-                    duplicatedOption = question.duplicatedOption,
+                    answerCounts = question.getAnswersCount(),
                     options = question.options.map {
                         OptionDto.from(it)
                     }
@@ -36,16 +36,16 @@ data class GetQuizResponse(
     data class OptionDto(
         val id: Long,
         val content: String,
-        val priority: Int,
-        val correctOption: Boolean
+        val order: Int,
+        val isCorrect: Boolean
     ) {
         companion object {
             fun from(option: Option): OptionDto {
                 return OptionDto(
                     id = option.id,
                     content = option.content,
-                    priority = option.priority,
-                    correctOption = option.isCorrect
+                    order = option.priority,
+                    isCorrect = option.isCorrect
                 )
             }
         }
