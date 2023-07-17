@@ -1,10 +1,10 @@
 package kr.mashup.wequiz.controller.ranking
 
 import io.swagger.v3.oas.annotations.media.Schema
+import kr.mashup.wequiz.application.answer.QuizAnswerRankingDto
 import kr.mashup.wequiz.application.ranking.QuizRankingService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
-import kr.mashup.wequiz.domain.answer.QuizAnswer
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -17,31 +17,63 @@ class RankingApiController(
     private val rankingService: QuizRankingService
 ) {
 
+    @GetMapping("/my-quiz")
+    fun getMyQuizAnswerRanking(
+        @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
+        @RequestParam size: Int = 15,
+        @RequestParam quizAnswerCursorId: Long? = null
+    ): GetQuizAnswerRankingResponse {
+        val searchSize = size + 1
+
+        val quizAnswers = rankingService.findMyQuizRanking(
+            quizAnswerId = quizAnswerCursorId,
+            quizCreatorId = userInfoDto.id,
+            size = size
+        )
+
+        return GetQuizAnswerRankingResponse(
+            hasNext = quizAnswers.size == searchSize,
+            cursorQuizAnswerId = quizAnswers.getOrNull(size)?.quizAnswerId,
+            rankings = quizAnswers.take(size).map { it.toRankingPresentation() }
+        )
+    }
+
     @GetMapping("/quiz/{quizId}")
     fun getQuizAnswerRanking(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long,
         @RequestParam size: Int = 15,
-        @RequestParam cursor: Long? = null
+        @RequestParam quizAnswerCursorId: Long? = null
     ): GetQuizAnswerRankingResponse {
-        val quizAnswers = rankingService.getQuizAnswerRanking(quizId, size, cursor)
+        val searchSize = size + 1
+        val quizAnswers = rankingService.findQuizRanking(
+            quizAnswerId = quizAnswerCursorId,
+            quizId = quizId,
+            size = searchSize
+        )
 
         return GetQuizAnswerRankingResponse(
-            rankings = quizAnswers.map { it.toRankingPresentation() }
+            hasNext = quizAnswers.size == searchSize,
+            cursorQuizAnswerId = quizAnswers.getOrNull(size - 1)?.quizAnswerId,
+            rankings = quizAnswers.take(size).map { it.toRankingPresentation() }
         )
     }
 }
 
 data class GetQuizAnswerRankingResponse(
+    val hasNext: Boolean,
+    val cursorQuizAnswerId: Long? = null,
     val rankings: List<QuizAnswerRankingPresentation>
 )
 
 data class QuizAnswerRankingPresentation(
     val userInfoDto: UserInfoDto,
-    val score: Int
+    val score: Int,
+    val quizAnswerId: Long
 )
 
-fun QuizAnswer.toRankingPresentation() = QuizAnswerRankingPresentation(
-    userInfoDto = UserInfoDto.from(user),
-    score = totalScore
+fun QuizAnswerRankingDto.toRankingPresentation() = QuizAnswerRankingPresentation(
+    userInfoDto = UserInfoDto.from(userId, nickname),
+    score = totalScore,
+    quizAnswerId = quizAnswerId
 )
