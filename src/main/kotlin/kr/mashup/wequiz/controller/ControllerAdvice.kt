@@ -41,20 +41,20 @@ class ControllerAdvice {
 
 data class WeQuizExceptionDto(
     val code: String,
-    val message: String,
+    val message: String
 ) {
     companion object {
         fun default(): WeQuizExceptionDto {
             return WeQuizExceptionDto(
                 code = WeQuizError.WEC999.code,
-                message = "문제가 발생 했어요",
+                message = "문제가 발생 했어요"
             )
         }
 
         fun from(exception: WeQuizException): WeQuizExceptionDto {
             return WeQuizExceptionDto(
                 code = exception.error.code,
-                message = exception.message,
+                message = exception.message
             )
         }
     }
