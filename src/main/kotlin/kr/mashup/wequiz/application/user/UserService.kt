@@ -2,6 +2,7 @@ package kr.mashup.wequiz.application.user
 
 import kr.mashup.wequiz.domain.user.User
 import kr.mashup.wequiz.repository.user.UserRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -28,4 +29,6 @@ class UserService(
         )
         userRepository.save(user)
     }
+
+    fun find(id: Long) = userRepository.findByIdOrNull(id) ?: throw RuntimeException()
 }

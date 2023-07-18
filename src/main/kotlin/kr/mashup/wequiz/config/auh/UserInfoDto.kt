@@ -11,5 +11,7 @@ class UserInfoDto(
             id = user.id,
             name = user.nickname
         )
+
+        fun from(id: Long, name: String) = UserInfoDto(id, name)
     }
 }

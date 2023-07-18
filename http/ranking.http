@@ -1,0 +1,10 @@
+### 문제 단건 랭킹 얻기
+GET http://{{host}}/api/v1/ranking/quiz/1?size=2&quizAnswerCursorId=2
+Content-Type: application/json
+x-wequiz-token: your_token_value
+
+
+### 내가 작성한 문제 랭킹 얻기
+GET http://{{host}}/api/v1/ranking/my-quiz?size=3
+Content-Type: application/json
+x-wequiz-token: your_token_value

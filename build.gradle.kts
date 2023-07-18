@@ -7,6 +7,7 @@ plugins {
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22" // 이거는 코틀린 버전이랑 동일하게 가야됩니다.
+    kotlin("kapt") version "1.8.22"
 }
 
 group = "kr.mashup"
@@ -23,6 +24,10 @@ dependencies {
 
     implementation("org.hibernate:hibernate-validator:8.0.0.Final")
 
+    // logging
+    implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
+
+    // swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
 
     // devtools
@@ -33,6 +38,11 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.querydsl:querydsl-core:5.0.0")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+//    kapt("com.querydsl:querydsl-kotlin-codegen:5.0.0")
 }
 
 tasks.withType<KotlinCompile> {
