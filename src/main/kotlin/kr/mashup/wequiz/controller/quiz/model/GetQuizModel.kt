@@ -7,41 +7,41 @@ import kr.mashup.wequiz.domain.quiz.question.Question
 
 data class GetQuizResponse(
     val title: String,
-    val questions: List<QuestionDto>
+    val questions: List<QuestionPresentation>
 ) {
-    data class QuestionDto(
+    data class QuestionPresentation(
         val id: Long,
         val title: String,
         val order: Int,
         val score: Int,
         val answerCounts: Int,
-        val options: List<OptionDto>
+        val options: List<OptionPresentation>
     ) {
         companion object {
-            fun from(question: Question): QuestionDto {
-                return QuestionDto(
+            fun from(question: Question): QuestionPresentation {
+                return QuestionPresentation(
                     id = question.id,
                     title = question.title,
                     order = question.priority,
                     score = question.score,
                     answerCounts = question.getAnswersCount(),
                     options = question.options.map {
-                        OptionDto.from(it)
+                        OptionPresentation.from(it)
                     }
                 )
             }
         }
     }
 
-    data class OptionDto(
+    data class OptionPresentation(
         val id: Long,
         val content: String,
         val order: Int,
         val isCorrect: Boolean
     ) {
         companion object {
-            fun from(option: Option): OptionDto {
-                return OptionDto(
+            fun from(option: Option): OptionPresentation {
+                return OptionPresentation(
                     id = option.id,
                     content = option.content,
                     order = option.priority,
@@ -56,7 +56,7 @@ data class GetQuizResponse(
             return GetQuizResponse(
                 title = quiz.title,
                 questions = quiz.questions.map {
-                    QuestionDto.from(it)
+                    QuestionPresentation.from(it)
                 }
             )
         }
