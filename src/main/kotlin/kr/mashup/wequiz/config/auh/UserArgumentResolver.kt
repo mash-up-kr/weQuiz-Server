@@ -1,5 +1,7 @@
 package kr.mashup.wequiz.config.auh
 
+import kr.mashup.wequiz.domain.exception.WeQuizAuthException
+import kr.mashup.wequiz.domain.exception.WeQuizError
 import kr.mashup.wequiz.repository.user.UserRepository
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
@@ -14,7 +16,7 @@ class UserArgumentResolver(
 ) : HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.hasParameterAnnotation(UserInfo::class.java) &&
-            parameter.parameterType == UserInfoDto::class.java
+                parameter.parameterType == UserInfoDto::class.java
     }
 
     override fun resolveArgument(
@@ -23,8 +25,8 @@ class UserArgumentResolver(
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?
     ): UserInfoDto {
-        val token = webRequest.getHeader("x-wequiz-token") ?: throw RuntimeException() // TODO 403 에러
-        val user = userRepository.findByToken(token) ?: throw RuntimeException() // TODO 403 에러
+        val token = webRequest.getHeader("x-wequiz-token") ?: throw WeQuizAuthException(WeQuizError.WEC400)
+        val user = userRepository.findByToken(token) ?: throw WeQuizAuthException(WeQuizError.WEC401)
 
         return UserInfoDto(
             id = user.id,

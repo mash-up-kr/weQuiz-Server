@@ -1,8 +1,10 @@
 package kr.mashup.wequiz.controller
 
+import kr.mashup.wequiz.domain.exception.WeQuizAuthException
 import kr.mashup.wequiz.domain.exception.WeQuizError
 import kr.mashup.wequiz.domain.exception.WeQuizException
 import kr.mashup.wequiz.lib.PrefixLogger
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageConversionException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -27,6 +29,15 @@ class ControllerAdvice {
     ): ResponseEntity<WeQuizExceptionDto> {
         logger.warn(exception) { "code: ${exception.error.code}, message: ${exception.message}" }
         return ResponseEntity.internalServerError()
+            .body(WeQuizExceptionDto.from(exception))
+    }
+
+    @ExceptionHandler(WeQuizAuthException::class)
+    fun handleWeQuizAuthException(
+        exception: WeQuizException
+    ): ResponseEntity<WeQuizExceptionDto> {
+        logger.warn(exception) { "code: ${exception.error.code}, message: ${exception.message}" }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
             .body(WeQuizExceptionDto.from(exception))
     }
 
