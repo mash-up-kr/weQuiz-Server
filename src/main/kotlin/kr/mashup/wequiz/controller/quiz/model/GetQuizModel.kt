@@ -6,6 +6,7 @@ import kr.mashup.wequiz.domain.quiz.option.Option
 import kr.mashup.wequiz.domain.quiz.question.Question
 
 data class GetQuizResponse(
+    val id: Long,
     val title: String,
     val questions: List<QuestionPresentation>
 ) {
@@ -54,6 +55,7 @@ data class GetQuizResponse(
     companion object {
         fun from(quiz: Quiz): GetQuizResponse {
             return GetQuizResponse(
+                id = quiz.id,
                 title = quiz.title,
                 questions = quiz.questions.map {
                     QuestionPresentation.from(it)
