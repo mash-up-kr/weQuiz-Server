@@ -1,5 +1,6 @@
 package kr.mashup.wequiz.application.statistic
 
+import kr.mashup.wequiz.domain.exception.WeQuizException
 import kr.mashup.wequiz.domain.statistic.QuizStatistic
 import kr.mashup.wequiz.repository.answer.QuizAnswerRepository
 import kr.mashup.wequiz.repository.quiz.QuizRepository
@@ -14,7 +15,7 @@ class StatisticService(
 ) {
     @Transactional(readOnly = true)
     fun getStatistic(quizId: Long): QuizStatistic {
-        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw IllegalArgumentException()
+        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw WeQuizException()
         val answers = quizAnswerRepository.findAllByQuizId(quiz.id)
         return QuizStatistic(quiz, answers)
     }

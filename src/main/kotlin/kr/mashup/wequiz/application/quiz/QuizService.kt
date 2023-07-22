@@ -3,6 +3,7 @@ package kr.mashup.wequiz.application.quiz
 import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.GetQuizResponse
+import kr.mashup.wequiz.domain.exception.WeQuizException
 import kr.mashup.wequiz.domain.quiz.QuestionScoreCalculator
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.quiz.option.Option
@@ -25,7 +26,7 @@ class QuizService(
         userInfoDto: UserInfoDto,
         createQuizRequest: CreateQuizRequest
     ): Quiz {
-        val user = userRepository.findByIdOrNull(userInfoDto.id) ?: throw IllegalArgumentException()
+        val user = userRepository.findByIdOrNull(userInfoDto.id) ?: throw WeQuizException()
         val quiz = Quiz.createNew(
             user = user,
             title = createQuizRequest.title
@@ -58,7 +59,7 @@ class QuizService(
 
     @Transactional(readOnly = true)
     fun getQuiz(quizId: Long): GetQuizResponse {
-        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw IllegalArgumentException()
+        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw WeQuizException("퀴즈를 찾을 수 없어요.")
         return GetQuizResponse.from(quiz)
     }
 
@@ -80,7 +81,7 @@ class QuizService(
 
     @Transactional
     fun deleteQuiz(requesterId: Long, quizId: Long) {
-        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw IllegalArgumentException()
+        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw WeQuizException()
         if (!quiz.isOwner(requesterId)) {
             throw RuntimeException("본인의 퀴즈만 삭제 할 수 있어요")
         }

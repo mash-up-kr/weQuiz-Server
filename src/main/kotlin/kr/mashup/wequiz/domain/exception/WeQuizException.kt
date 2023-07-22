@@ -1,6 +1,8 @@
 package kr.mashup.wequiz.domain.exception
 
-class WeQuizException(
-    val error: WeQuizError,
+open class WeQuizException(
+    val error: WeQuizError = WeQuizError.WEC999,
     override val message: String = error.description
-) : RuntimeException()
+) : RuntimeException() {
+    constructor(message: String) : this(WeQuizError.WEC999, message)
+}
