@@ -4,6 +4,7 @@ import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.domain.answer.QuestionAnswer
 import kr.mashup.wequiz.domain.answer.QuestionAnswerScoreCalculator
 import kr.mashup.wequiz.domain.answer.QuizAnswer
+import kr.mashup.wequiz.domain.exception.WeQuizException
 import kr.mashup.wequiz.repository.answer.QuestionAnswerRepository
 import kr.mashup.wequiz.repository.answer.QuizAnswerQueryRepository
 import kr.mashup.wequiz.repository.answer.QuizAnswerRepository
@@ -28,8 +29,8 @@ class AnswerService(
         quizId: Long,
         answers: List<AnswersDto>
     ): QuizAnswer {
-        val user = userRepository.findByIdOrNull(userInfo.id) ?: throw IllegalArgumentException("유저를 찾을 수 없어요.")
-        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw IllegalArgumentException("퀴즈를 찾을 수 없어요.")
+        val user = userRepository.findByIdOrNull(userInfo.id) ?: throw WeQuizException("유저를 찾을 수 없어요.")
+        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw WeQuizException("퀴즈를 찾을 수 없어요.")
 
         val quizAnswer = QuizAnswer.createNew(
             user = user,
@@ -37,9 +38,9 @@ class AnswerService(
         )
 
         val totalScore = answers.sumOf { answer ->
-            val question = quiz.findQuestion(answer.questionId) ?: throw IllegalArgumentException("문제를 찾을 수 없어요.")
+            val question = quiz.findQuestion(answer.questionId) ?: throw WeQuizException("문제를 찾을 수 없어요.")
             val options = answer.optionIds.map { optionId ->
-                question.findOption(optionId) ?: throw IllegalArgumentException("옵션을 찾을 수 없어요.")
+                question.findOption(optionId) ?: throw WeQuizException("옵션을 찾을 수 없어요.")
             }
 
             val questionAnswers = QuestionAnswer.createNew(
