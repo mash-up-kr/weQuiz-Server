@@ -16,7 +16,7 @@ class UserArgumentResolver(
 ) : HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.hasParameterAnnotation(UserInfo::class.java) &&
-                parameter.parameterType == UserInfoDto::class.java
+            parameter.parameterType == UserInfoDto::class.java
     }
 
     override fun resolveArgument(
