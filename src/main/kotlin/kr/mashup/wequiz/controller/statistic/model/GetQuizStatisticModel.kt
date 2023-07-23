@@ -32,7 +32,8 @@ data class GetQuizStatisticResponse(
                         options = question.options.map { option ->
                             OptionStatisticDto(
                                 optionId = option.optionId,
-                                selectivity = option.selectivity
+                                selectivity = option.selectivity,
+                                isCorrect = option.isCorrect
                             )
                         }
                     )
@@ -65,6 +66,7 @@ data class GetQuizStatisticResponse(
 
     data class OptionStatisticDto(
         val optionId: Long,
-        val selectivity: Float
+        val selectivity: Float,
+        val isCorrect: Boolean
     )
 }
