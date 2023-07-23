@@ -1,0 +1,156 @@
+### 회원가입
+POST http://{{host}}/api/v1/user/join
+Content-Type: application/json
+x-wequiz-token: token1
+
+{
+  "token": "token1",
+  "phone": "01012345678",
+  "nickname": "원서긩",
+  "description": "내이름은 공듀원석z"
+}
+
+### 회원가입2
+POST http://{{host}}/api/v1/user/join
+Content-Type: application/json
+x-wequiz-token: token2
+
+{
+  "token": "token2",
+  "phone": "01011112222",
+  "nickname": "상후니z",
+  "description": "안상하니? 안상후니~"
+}
+
+### 회원가입3
+POST http://{{host}}/api/v1/user/join
+Content-Type: application/json
+x-wequiz-token: token3
+
+{
+  "token": "token3",
+  "phone": "01088624229",
+  "nickname": "예옹",
+  "description": "중2병입니다 말걸지마세요"
+}
+
+### 퀴즈 만들기
+POST http://{{host}}/api/v1/quiz
+Content-Type: application/json
+x-wequiz-token: token1
+
+{
+  "title": "100점인 자, 나의 베프가 되어라",
+  "questions": [
+    {
+      "title": "내가 복권 1등에 당첨되면 뭐 살까?",
+      "priority": 1,
+      "duplicatedAnswer": false,
+      "options": [
+        {
+          "content": "람보르기니🚙",
+          "priority": 1,
+          "isCorrect": true
+        },
+        {
+          "content": "다이아몬드💎",
+          "priority": 2,
+          "isCorrect": false
+        },
+        {
+          "content": "페브리즈",
+          "priority": 3,
+          "isCorrect": false
+        }
+      ]
+    },
+    {
+      "title": "내가 안먹는 건?",
+      "priority": 2,
+      "duplicatedAnswer": true,
+      "options": [
+        {
+          "content": "치즈",
+          "priority": 1,
+          "isCorrect": true
+        },
+        {
+          "content": "피망",
+          "priority": 2,
+          "isCorrect": false
+        },
+        {
+          "content": "토마토",
+          "priority": 3,
+          "isCorrect": true
+        }
+      ]
+    }
+  ]
+}
+
+### 퀴즈 풀기
+POST http://{{host}}/api/v1/quiz/1/answers
+Content-Type: application/json
+x-wequiz-token: token1
+
+{
+  "answers": [
+    {
+      "questionId": 1,
+      "optionIds": [
+        1
+      ]
+    },
+    {
+      "questionId": 2,
+      "optionIds": [
+        4,6
+      ]
+    }
+  ]
+}
+
+### 퀴즈 풀기2
+POST http://{{host}}/api/v1/quiz/1/answers
+Content-Type: application/json
+x-wequiz-token: token2
+
+{
+  "answers": [
+    {
+      "questionId": 1,
+      "optionIds": [
+        2
+      ]
+    },
+    {
+      "questionId": 2,
+      "optionIds": [
+        4,6
+      ]
+    }
+  ]
+}
+
+### 퀴즈 풀기2
+POST http://{{host}}/api/v1/quiz/1/answers
+Content-Type: application/json
+x-wequiz-token: token3
+
+{
+  "answers": [
+    {
+      "questionId": 1,
+      "optionIds": [
+        2
+      ]
+    },
+    {
+      "questionId": 2,
+      "optionIds": [
+        5,6
+      ]
+    }
+  ]
+}
