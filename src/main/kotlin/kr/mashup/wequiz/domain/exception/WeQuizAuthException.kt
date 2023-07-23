@@ -1,7 +1,7 @@
 package kr.mashup.wequiz.domain.exception
 
 class WeQuizAuthException(
-    error: WeQuizError,
+    error: WeQuizError
 ) : WeQuizException(
-    error = error,
+    error = error
 )
