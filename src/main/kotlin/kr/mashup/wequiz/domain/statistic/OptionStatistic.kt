@@ -10,4 +10,6 @@ class OptionStatistic(
     val optionId: Long = option.id
 
     val selectivity: Float = (optionSelectCount / questionTotalAnswerCount.toFloat())
+
+    val isCorrect: Boolean = option.isCorrect
 }
