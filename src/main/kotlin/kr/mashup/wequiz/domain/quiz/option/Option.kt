@@ -1,15 +1,11 @@
 package kr.mashup.wequiz.domain.quiz.option
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.*
 import kr.mashup.wequiz.domain.quiz.question.Question
 import java.time.LocalDateTime
 
 @Entity
+@Table(name = "option1")
 class Option(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
