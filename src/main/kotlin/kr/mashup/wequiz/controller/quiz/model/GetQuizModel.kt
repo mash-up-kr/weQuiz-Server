@@ -13,7 +13,6 @@ data class GetQuizResponse(
     data class QuestionPresentation(
         val id: Long,
         val title: String,
-        val order: Int,
         val score: Int,
         val answerCounts: Int,
         val options: List<OptionPresentation>
@@ -23,7 +22,6 @@ data class GetQuizResponse(
                 return QuestionPresentation(
                     id = question.id,
                     title = question.title,
-                    order = question.priority,
                     score = question.score,
                     answerCounts = question.getAnswersCount(),
                     options = question.options.map {
@@ -37,7 +35,6 @@ data class GetQuizResponse(
     data class OptionPresentation(
         val id: Long,
         val content: String,
-        val order: Int,
         val isCorrect: Boolean
     ) {
         companion object {
@@ -45,7 +42,6 @@ data class GetQuizResponse(
                 return OptionPresentation(
                     id = option.id,
                     content = option.content,
-                    order = option.priority,
                     isCorrect = option.isCorrect
                 )
             }

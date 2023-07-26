@@ -25,9 +25,6 @@ class Question(
     @Column(name = "title")
     val title: String,
 
-    @Column(name = "priority")
-    val priority: Int,
-
     @Column(name = "score")
     val score: Int,
 
@@ -63,14 +60,12 @@ class Question(
         fun createNew(
             quiz: Quiz,
             title: String,
-            priority: Int,
             score: Int,
             duplicatedOption: Boolean
         ): Question {
             return Question(
                 quiz = quiz,
                 title = title,
-                priority = priority,
                 score = score,
                 duplicatedOption = duplicatedOption
             )

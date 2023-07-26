@@ -15,12 +15,10 @@ data class QuizView(
                 questions = quiz.questions.map { question ->
                     QuestionView(
                         id = question.id,
-                        priority = question.priority,
                         title = question.title,
                         options = question.options.map { option ->
                             OptionView(
                                 id = option.id,
-                                priority = option.priority,
                                 content = option.content
                             )
                         }
@@ -33,13 +31,11 @@ data class QuizView(
 
 data class QuestionView(
     val id: Long,
-    val priority: Int,
     val title: String,
     val options: List<OptionView>
 )
 
 data class OptionView(
     val id: Long,
-    val priority: Int,
     val content: String
 )

@@ -21,9 +21,6 @@ class Option(
     @Column(name = "content")
     val content: String,
 
-    @Column(name = "priority")
-    val priority: Int,
-
     @Column(name = "is_correct")
     val isCorrect: Boolean,
 
@@ -40,13 +37,11 @@ class Option(
         fun createNew(
             question: Question,
             content: String,
-            priority: Int,
             isCorrect: Boolean
         ): Option {
             return Option(
                 question = question,
                 content = content,
-                priority = priority,
                 isCorrect = isCorrect
             )
         }
