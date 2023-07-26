@@ -30,6 +30,8 @@ dependencies {
     // swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
 
+    implementation("mysql:mysql-connector-java:8.0.33")
+
     // devtools
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")

@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: local
   h2:
     console:
       enabled: true
@@ -9,9 +11,3 @@ spring:
         show_sql: true
         default_batch_fetch_size: 1000
     open-in-view: false
-    hibernate:
-      ddl-auto: create-drop
-  datasource:
-    url: jdbc:h2:mem://localhost/~/testdb;
-    username: sa
-    password:
