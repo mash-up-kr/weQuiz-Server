@@ -37,7 +37,6 @@ class QuizService(
             val question = Question.createNew(
                 quiz = quiz,
                 title = questionDto.title,
-                priority = questionDto.priority,
                 score = scores[index],
                 duplicatedOption = questionDto.duplicatedOption
             )
@@ -46,7 +45,6 @@ class QuizService(
                 Option.createNew(
                     question = question,
                     content = optionDto.content,
-                    priority = optionDto.priority,
                     isCorrect = optionDto.isCorrect
                 )
             }

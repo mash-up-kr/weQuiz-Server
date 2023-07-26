@@ -7,14 +7,12 @@ data class CreateQuizRequest(
 
 data class QuestionDto(
     val title: String,
-    val priority: Int,
     val duplicatedOption: Boolean,
     val options: List<OptionDto>
 )
 
 data class OptionDto(
     val content: String,
-    val priority: Int,
     val isCorrect: Boolean
 )
 
