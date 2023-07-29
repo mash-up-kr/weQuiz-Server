@@ -4,8 +4,7 @@ package kr.mashup.wequiz.controller.statistic.model
 import kr.mashup.wequiz.domain.statistic.QuizStatistic
 
 data class GetQuizStatisticResponse(
-    val quizInfo: QuizInfo,
-    val statistic: List<QuestionStatisticDto>
+    val quizInfo: QuizInfo
 ) {
     companion object {
         fun from(quizStatistic: QuizStatistic): GetQuizStatisticResponse {
@@ -20,24 +19,14 @@ data class GetQuizStatisticResponse(
                             options = question.options.map { option ->
                                 OptionDto(
                                     optionId = option.id,
-                                    content = option.content
+                                    content = option.content,
+                                    isCorrect = option.isCorrect,
+                                    selectivity = quizStatistic.findOptionStatistic(question.id, option.id)?.selectivity ?: 0f
                                 )
                             }
                         )
                     }
-                ),
-                statistic = quizStatistic.statistic.map { question ->
-                    QuestionStatisticDto(
-                        questionId = question.questionId,
-                        options = question.options.map { option ->
-                            OptionStatisticDto(
-                                optionId = option.optionId,
-                                selectivity = option.selectivity,
-                                isCorrect = option.isCorrect
-                            )
-                        }
-                    )
-                }
+                )
             )
         }
     }
@@ -56,7 +45,9 @@ data class GetQuizStatisticResponse(
 
     data class OptionDto(
         val optionId: Long,
-        val content: String
+        val content: String,
+        val isCorrect: Boolean,
+        val selectivity: Float
     )
 
     data class QuestionStatisticDto(
