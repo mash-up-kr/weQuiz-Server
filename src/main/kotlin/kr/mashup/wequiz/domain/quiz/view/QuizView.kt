@@ -19,7 +19,8 @@ data class QuizView(
                         options = question.options.map { option ->
                             OptionView(
                                 id = option.id,
-                                content = option.content
+                                content = option.content,
+                                isCorrect = option.isCorrect
                             )
                         }
                     )
@@ -37,5 +38,6 @@ data class QuestionView(
 
 data class OptionView(
     val id: Long,
-    val content: String
+    val content: String,
+    val isCorrect: Boolean
 )
