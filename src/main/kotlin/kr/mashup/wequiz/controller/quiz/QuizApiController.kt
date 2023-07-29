@@ -42,24 +42,26 @@ class QuizApiController(
     fun getQuiz(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
-    ): GetQuizResponse {
+    ): ApiResponse<GetQuizResponse> {
         return quizService.getQuiz(quizId)
+            .let { ApiResponse.success(it) }
     }
 
     @Operation(
         summary = "퀴즈 리스트 조회 (커서 페이징)",
         description = "- size 는 default 15 \n " +
-            "- cursor 를 넘기지 않으면 첫 페이지 \n " +
-            "- nextCursor 를 다시 넣어서 조회"
+                "- cursor 를 넘기지 않으면 첫 페이지 \n " +
+                "- nextCursor 를 다시 넣어서 조회"
     )
     @GetMapping
     fun getQuizList(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @RequestParam size: Int = 15,
         @RequestParam cursor: Long? = null
-    ): GetQuizListResponse {
+    ): ApiResponse<GetQuizListResponse> {
         val quizList = quizService.getQuizList(userInfoDto.id, cursor, size)
         return GetQuizListResponse.from(quizList)
+            .let { ApiResponse.success(it) }
     }
 
     @Operation(summary = "퀴즈 삭제")
@@ -67,11 +69,12 @@ class QuizApiController(
     fun deleteQuiz(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
-    ): DeleteQuizResponse {
+    ): ApiResponse<DeleteQuizResponse> {
         quizService.deleteQuiz(
             requesterId = userInfoDto.id,
             quizId = quizId
         )
         return DeleteQuizResponse(isDeleted = true)
+            .let { ApiResponse.success(it) }
     }
 }

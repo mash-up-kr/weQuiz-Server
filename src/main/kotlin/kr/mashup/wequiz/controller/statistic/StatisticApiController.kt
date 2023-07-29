@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import kr.mashup.wequiz.application.statistic.StatisticService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
+import kr.mashup.wequiz.controller.ApiResponse
 import kr.mashup.wequiz.controller.statistic.model.GetQuizStatisticResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,8 +24,9 @@ class StatisticApiController(
     fun getQuizStatistic(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
-    ): GetQuizStatisticResponse {
+    ): ApiResponse<GetQuizStatisticResponse> {
         return statisticService.getStatistic(quizId)
             .let { GetQuizStatisticResponse.from(it) }
+            .let { ApiResponse.success(it) }
     }
 }
