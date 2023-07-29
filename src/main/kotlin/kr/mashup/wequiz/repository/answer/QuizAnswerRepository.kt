@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface QuizAnswerRepository : JpaRepository<QuizAnswer, Long> {
     fun findAllByQuizId(quizId: Long): List<QuizAnswer>
 
+    fun findByQuizIdAndUserId(quizId: Long, userId: Long): QuizAnswer?
+
     fun findAllByQuizIdAndTotalScoreLessThanAndIdLessThanAndDeletedAtIsNullOrderByTotalScoreDescCreatedAtDesc(
         quizId: Long,
         totalScore: Long, // 커서
