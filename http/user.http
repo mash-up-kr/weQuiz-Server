@@ -3,9 +3,9 @@ POST http://{{host}}/api/v1/user/join
 Content-Type: application/json
 
 {
-  "token": "your_token_value2",
-  "phone": "your_phone_number2",
-  "nickname": "your_nickname2",
+  "token": "your_token_value",
+  "phone": "your_phone_number",
+  "nickname": "your_nickname",
   "description": "your_description"
 }
 
