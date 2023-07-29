@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import kr.mashup.wequiz.application.quiz.QuizService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
-import kr.mashup.wequiz.controller.ApiResponse
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizResponse
 import kr.mashup.wequiz.controller.quiz.model.DeleteQuizResponse
@@ -32,9 +31,8 @@ class QuizApiController(
     fun createQuiz(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @RequestBody createQuizRequest: CreateQuizRequest
-    ): ApiResponse<CreateQuizResponse> {
+    ): CreateQuizResponse {
         return CreateQuizResponse(quizId = quizService.createQuiz(userInfoDto, createQuizRequest).id)
-            .let { ApiResponse.success(it) }
     }
 
     @Operation(summary = "퀴즈 단건 조회")
@@ -42,26 +40,24 @@ class QuizApiController(
     fun getQuiz(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
-    ): ApiResponse<GetQuizResponse> {
+    ): GetQuizResponse {
         return quizService.getQuiz(quizId)
-            .let { ApiResponse.success(it) }
     }
 
     @Operation(
         summary = "퀴즈 리스트 조회 (커서 페이징)",
         description = "- size 는 default 15 \n " +
-                "- cursor 를 넘기지 않으면 첫 페이지 \n " +
-                "- nextCursor 를 다시 넣어서 조회"
+            "- cursor 를 넘기지 않으면 첫 페이지 \n " +
+            "- nextCursor 를 다시 넣어서 조회"
     )
     @GetMapping
     fun getQuizList(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @RequestParam size: Int = 15,
         @RequestParam cursor: Long? = null
-    ): ApiResponse<GetQuizListResponse> {
+    ): GetQuizListResponse {
         val quizList = quizService.getQuizList(userInfoDto.id, cursor, size)
         return GetQuizListResponse.from(quizList)
-            .let { ApiResponse.success(it) }
     }
 
     @Operation(summary = "퀴즈 삭제")
@@ -69,12 +65,11 @@ class QuizApiController(
     fun deleteQuiz(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
-    ): ApiResponse<DeleteQuizResponse> {
+    ): DeleteQuizResponse {
         quizService.deleteQuiz(
             requesterId = userInfoDto.id,
             quizId = quizId
         )
         return DeleteQuizResponse(isDeleted = true)
-            .let { ApiResponse.success(it) }
     }
 }
