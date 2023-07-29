@@ -1,20 +1,20 @@
 ### 퀴즈 풀기
-POST http://{{host}}/api/v1/quiz/1/answers
+POST http://{{host}}/api/v1/quiz/2/answers
 Content-Type: application/json
-x-wequiz-token: your_token_value
+x-wequiz-token: your_token_value2
 
 {
   "answers": [
     {
-      "questionId": 1,
+      "questionId": 3,
       "optionIds": [
-        1
+        9
       ]
     },
     {
-      "questionId": 2,
+      "questionId": 4,
       "optionIds": [
-        4
+        10
       ]
     }
   ]
