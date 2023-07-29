@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import kr.mashup.wequiz.application.user.UserService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
+import kr.mashup.wequiz.controller.ApiResponse
 import kr.mashup.wequiz.controller.user.model.JoinUserRequest
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -23,26 +24,29 @@ class UserApiController(
     @PostMapping("/join")
     fun joinUser(
         @RequestBody joinUserRequest: JoinUserRequest
-    ) {
+    ): ApiResponse<Boolean> {
         userService.join(
             token = joinUserRequest.token,
             phone = joinUserRequest.phone,
             nickname = joinUserRequest.nickname,
             description = joinUserRequest.description
         )
+        return ApiResponse.success(true)
     }
 
     @Operation(summary = "내 정보 조회하기")
-    @GetMapping()
+    @GetMapping
     fun me(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto
-    ): UserPresentation {
+    ): ApiResponse<UserPresentation> {
         val user = userService.find(userInfoDto.id)
 
-        return UserPresentation(
-            id = user.id,
-            nickname = user.nickname,
-            description = user.description
+        return ApiResponse.success(
+            UserPresentation(
+                id = user.id,
+                nickname = user.nickname,
+                description = user.description
+            )
         )
     }
 
