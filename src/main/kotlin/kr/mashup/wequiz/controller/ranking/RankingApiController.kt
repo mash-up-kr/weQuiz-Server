@@ -7,6 +7,7 @@ import kr.mashup.wequiz.application.answer.QuizAnswerRankingDto
 import kr.mashup.wequiz.application.ranking.QuizRankingService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
+import kr.mashup.wequiz.controller.ApiResponse
 import kr.mashup.wequiz.repository.answer.MyQuizRankingDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -28,7 +29,7 @@ class RankingApiController(
         @RequestParam cursorScore: Int? = null,
         @RequestParam cursorUserId: Long? = null,
         @RequestParam size: Int = 15
-    ): GetMyQuizAnswerRankingResponse {
+    ): ApiResponse<GetMyQuizAnswerRankingResponse> {
         val searchSize = size + 1
 
         val rankings = rankingService.findMyQuizRanking(
@@ -45,7 +46,7 @@ class RankingApiController(
             cursorUserId = last?.user?.id,
             cursorScore = last?.totalScore,
             rankings = rankings.take(size).map { it.toRankingPresentation() }
-        )
+        ).let { ApiResponse.success(it) }
     }
 
     @Operation(summary = "퀴즈 단건의 랭킹")
@@ -55,7 +56,7 @@ class RankingApiController(
         @PathVariable(name = "quizId") quizId: Long,
         @RequestParam size: Int = 15,
         @RequestParam quizAnswerCursorId: Long? = null
-    ): GetQuizAnswerRankingResponse {
+    ): ApiResponse<GetQuizAnswerRankingResponse> {
         val searchSize = size + 1
         val quizAnswers = rankingService.findQuizRanking(
             quizAnswerId = quizAnswerCursorId,
@@ -67,7 +68,7 @@ class RankingApiController(
             hasNext = quizAnswers.size == searchSize,
             cursorQuizAnswerId = quizAnswers.getOrNull(size - 1)?.quizAnswerId,
             rankings = quizAnswers.take(size).map { it.toRankingPresentation() }
-        )
+        ).let { ApiResponse.success(it) }
     }
 }
 
@@ -78,6 +79,7 @@ data class GetMyQuizAnswerRankingResponse(
     val rankings: List<QuizAnswerRankingPresentation>
 
 )
+
 data class GetQuizAnswerRankingResponse(
     val hasNext: Boolean,
     val cursorQuizAnswerId: Long? = null,
