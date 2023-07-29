@@ -32,7 +32,7 @@ interface QuizAnswerQueryRepository {
 
 data class MyQuizRankingDto @QueryProjection constructor(
     val user: User,
-    val totalScore:Int,
+    val totalScore: Int
 )
 enum class SortOrder(val description: String) {
     TOTAL_SCORE_DESC("총 점수 순")
@@ -84,11 +84,15 @@ internal class QueryDslQuizAnswerRepository(
             .join(quizAnswer.quiz, quiz)
             .where(quiz.user.id.eq(1L))
             .groupBy(quizAnswer.user.id)
-            .having(quizAnswer.totalScore.sum().lt(cursorScore)
-                .run {
-                    if(cursorUserId != null) this.or(quizAnswer.totalScore.sum().eq(cursorScore).and(quizAnswer.user.id.lt(1L)))
-                    else this
-                }
+            .having(
+                quizAnswer.totalScore.sum().lt(cursorScore)
+                    .run {
+                        if (cursorUserId != null) {
+                            this.or(quizAnswer.totalScore.sum().eq(cursorScore).and(quizAnswer.user.id.lt(1L)))
+                        } else {
+                            this
+                        }
+                    }
             )
             .run {
                 when (sortOrder) {

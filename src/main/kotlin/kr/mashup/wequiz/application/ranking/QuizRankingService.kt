@@ -37,7 +37,6 @@ class QuizRankingService(
 
     @Transactional(readOnly = true)
     fun findMyQuizRanking(cursorUserId: Long?, cursorScore: Int?, quizCreatorId: Long, size: Int): List<MyQuizRankingDto> {
-
         return quizAnswerQueryRepository.findQuizAnswersByQuizCreatorId(
             cursorUserId = cursorUserId,
             cursorScore = cursorScore ?: Int.MAX_VALUE,

@@ -27,7 +27,7 @@ class RankingApiController(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @RequestParam cursorScore: Int? = null,
         @RequestParam cursorUserId: Long? = null,
-        @RequestParam size: Int = 15,
+        @RequestParam size: Int = 15
     ): GetMyQuizAnswerRankingResponse {
         val searchSize = size + 1
 
@@ -86,15 +86,15 @@ data class GetQuizAnswerRankingResponse(
 
 data class QuizAnswerRankingPresentation(
     val userInfoDto: UserInfoDto,
-    val score: Int,
+    val score: Int
 )
 
 fun QuizAnswerRankingDto.toRankingPresentation() = QuizAnswerRankingPresentation(
     userInfoDto = UserInfoDto.from(userId, nickname),
-    score = totalScore,
+    score = totalScore
 )
 
 fun MyQuizRankingDto.toRankingPresentation() = QuizAnswerRankingPresentation(
     userInfoDto = UserInfoDto.from(user),
-    score = totalScore,
+    score = totalScore
 )
