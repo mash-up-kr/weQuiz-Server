@@ -9,8 +9,11 @@ class QuizStatistic(
     private val answers: List<QuizAnswer>
 ) {
     val quizView: QuizView = QuizView.from(quiz)
+    fun findOptionStatistic(questionId: Long, optionId: Long): OptionStatistic? {
+        return statistic.find { it.questionId == questionId }?.options?.find { it.optionId == optionId }
+    }
 
-    val statistic: List<QuestionStatistic> = answers.map { it.questionAnswers }.flatten()
+    private val statistic: List<QuestionStatistic> = answers.map { it.questionAnswers }.flatten()
         .groupBy { it.question }
         .mapValues { (_, value) ->
             value.groupBy { it.option }
