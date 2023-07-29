@@ -4,7 +4,6 @@ import kr.mashup.wequiz.domain.exception.WeQuizException
 import kr.mashup.wequiz.domain.statistic.QuizStatistic
 import kr.mashup.wequiz.repository.answer.QuizAnswerRepository
 import kr.mashup.wequiz.repository.quiz.QuizRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,7 +14,7 @@ class StatisticService(
 ) {
     @Transactional(readOnly = true)
     fun getStatistic(quizId: Long): QuizStatistic {
-        val quiz = quizRepository.findByIdOrNull(quizId) ?: throw WeQuizException()
+        val quiz = quizRepository.findByIdAndDeletedAtIsNull(quizId) ?: throw WeQuizException("퀴즈를 찾을 수 없어요")
         val answers = quizAnswerRepository.findAllByQuizIdAndDeletedAtIsNull(quiz.id)
         return QuizStatistic(quiz, answers)
     }
