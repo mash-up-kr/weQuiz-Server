@@ -1,5 +1,7 @@
 package kr.mashup.wequiz.application.user
 
+import kr.mashup.wequiz.domain.exception.WeQuizError
+import kr.mashup.wequiz.domain.exception.WeQuizException
 import kr.mashup.wequiz.domain.user.User
 import kr.mashup.wequiz.repository.user.UserRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -18,7 +20,7 @@ class UserService(
         val isExists = userRepository.existsByToken(token)
 
         if (isExists) {
-            throw RuntimeException()
+            throw WeQuizException(WeQuizError.WEC500)
         }
 
         val user = User.createNew(
