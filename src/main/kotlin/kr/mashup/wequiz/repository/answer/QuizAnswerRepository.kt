@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface QuizAnswerRepository : JpaRepository<QuizAnswer, Long> {
-    fun findAllByQuizId(quizId: Long): List<QuizAnswer>
+    fun findAllByQuizIdAndDeletedAtIsNull(quizId: Long): List<QuizAnswer>
 
     fun findByQuizIdAndUserId(quizId: Long, userId: Long): QuizAnswer?
 

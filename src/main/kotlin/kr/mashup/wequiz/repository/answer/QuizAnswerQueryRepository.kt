@@ -46,6 +46,8 @@ internal class QueryDslQuizAnswerRepository(
         return jpaQueryFactory.selectFrom(quizAnswer)
             .where(
                 quizAnswer.quiz.id.eq(quizId).and(
+                    quizAnswer.deletedAt.isNull
+                ).and(
                     quizAnswer.totalScore.lt(cursorScore).run {
                         if (quizAnswerId != null) {
                             this.and(
@@ -82,7 +84,7 @@ internal class QueryDslQuizAnswerRepository(
             )
             .from(quizAnswer)
             .join(quizAnswer.quiz, quiz)
-            .where(quiz.user.id.eq(quizCreatorId))
+            .where(quiz.user.id.eq(quizCreatorId).and(quizAnswer.deletedAt.isNotNull).and(quiz.deletedAt.isNull))
             .groupBy(quizAnswer.user.id)
             .having(
                 quizAnswer.totalScore.sum().lt(cursorScore)

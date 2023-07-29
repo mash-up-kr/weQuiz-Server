@@ -5,6 +5,9 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface QuizRepository : JpaRepository<Quiz, Long> {
+
+    fun findByIdAndDeletedAtIsNull(id: Long): Quiz?
+
     fun findAllByUserIdAndDeletedAtIsNullOrderByIdDesc(
         userId: Long,
         pageable: Pageable
