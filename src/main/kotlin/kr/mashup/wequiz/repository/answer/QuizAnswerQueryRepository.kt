@@ -1,6 +1,6 @@
 package kr.mashup.wequiz.repository.answer
 
-import com.querydsl.core.types.Projections
+import com.querydsl.core.annotations.QueryProjection
 import com.querydsl.jpa.impl.JPAQueryFactory
 import kr.mashup.wequiz.domain.answer.QQuizAnswer.quizAnswer
 import kr.mashup.wequiz.domain.answer.QuizAnswer
@@ -30,7 +30,7 @@ interface QuizAnswerQueryRepository {
     }
 }
 
-data class MyQuizRankingDto(
+data class MyQuizRankingDto @QueryProjection constructor(
     val user: User,
     val totalScore:Int,
 )
@@ -74,7 +74,12 @@ internal class QueryDslQuizAnswerRepository(
         size: Int
     ): List<MyQuizRankingDto> {
         return jpaQueryFactory
-            .select(Projections.constructor(MyQuizRankingDto::class.java))
+            .select(
+                QMyQuizRankingDto(
+                    quizAnswer.user,
+                    quizAnswer.totalScore.sum()
+                )
+            )
             .from(quizAnswer)
             .join(quizAnswer.quiz, quiz)
             .where(quiz.user.id.eq(1L))
