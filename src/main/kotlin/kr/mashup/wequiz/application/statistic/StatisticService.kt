@@ -16,7 +16,7 @@ class StatisticService(
     @Transactional(readOnly = true)
     fun getStatistic(quizId: Long): QuizStatistic {
         val quiz = quizRepository.findByIdOrNull(quizId) ?: throw WeQuizException()
-        val answers = quizAnswerRepository.findAllByQuizId(quiz.id)
+        val answers = quizAnswerRepository.findAllByQuizIdAndDeletedAtIsNull(quiz.id)
         return QuizStatistic(quiz, answers)
     }
 }
