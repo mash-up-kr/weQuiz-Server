@@ -7,20 +7,20 @@ import kr.mashup.wequiz.domain.exception.WeQuizException
 class ApiResponse<T> private constructor(
     val code: String,
     val data: T? = null,
-    val message: String? = null,
+    val message: String? = null
 ) {
     companion object {
         fun <T> success(result: T?): ApiResponse<T> {
             return ApiResponse(
                 code = "SUCCESS",
-                data = result,
+                data = result
             )
         }
 
         fun failure(wequizException: WeQuizException): ApiResponse<Any> {
             return ApiResponse(
                 code = wequizException.error.code,
-                message = wequizException.message,
+                message = wequizException.message
             )
         }
     }
