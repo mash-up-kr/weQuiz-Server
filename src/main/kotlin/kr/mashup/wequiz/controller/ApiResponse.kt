@@ -20,6 +20,7 @@ class ApiResponse<T> private constructor(
         fun failure(wequizException: WeQuizException): ApiResponse<Any> {
             return ApiResponse(
                 code = wequizException.error.code,
+                data = emptyMap<Any, Any>(),
                 message = wequizException.message,
             )
         }
