@@ -84,7 +84,7 @@ internal class QueryDslQuizAnswerRepository(
             )
             .from(quizAnswer)
             .join(quizAnswer.quiz, quiz)
-            .where(quiz.user.id.eq(quizCreatorId).and(quizAnswer.deletedAt.isNotNull).and(quiz.deletedAt.isNull))
+            .where(quiz.user.id.eq(quizCreatorId).and(quizAnswer.deletedAt.isNull).and(quiz.deletedAt.isNull))
             .groupBy(quizAnswer.user.id)
             .having(
                 quizAnswer.totalScore.sum().lt(cursorScore)
