@@ -1,6 +1,7 @@
 package kr.mashup.wequiz.controller
 
 import kr.mashup.wequiz.domain.exception.WeQuizAuthException
+import kr.mashup.wequiz.domain.exception.WeQuizError
 import kr.mashup.wequiz.domain.exception.WeQuizException
 import kr.mashup.wequiz.lib.PrefixLogger
 import org.springframework.http.HttpStatus
@@ -16,35 +17,56 @@ class ControllerAdvice {
     @ExceptionHandler(RuntimeException::class)
     fun handleRuntimeException(
         exception: RuntimeException
-    ): ResponseEntity<ApiResponse<Any>> {
+    ): ResponseEntity<WeQuizExceptionDto> {
         logger.warn(exception) { "문제가 발생 했어요." }
         return ResponseEntity.internalServerError()
-            .body(ApiResponse.failure(WeQuizException()))
+            .body(WeQuizExceptionDto.default())
     }
 
     @ExceptionHandler(WeQuizException::class)
     fun handleWeQuizException(
         exception: WeQuizException
-    ): ResponseEntity<ApiResponse<Any>> {
+    ): ResponseEntity<WeQuizExceptionDto> {
         logger.warn(exception) { "code: ${exception.error.code}, message: ${exception.message}" }
         return ResponseEntity.internalServerError()
-            .body(ApiResponse.failure(exception))
+            .body(WeQuizExceptionDto.from(exception))
     }
 
     @ExceptionHandler(WeQuizAuthException::class)
     fun handleWeQuizAuthException(
         exception: WeQuizException
-    ): ResponseEntity<ApiResponse<Any>> {
+    ): ResponseEntity<WeQuizExceptionDto> {
         logger.warn(exception) { "code: ${exception.error.code}, message: ${exception.message}" }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-            .body(ApiResponse.failure(exception))
+            .body(WeQuizExceptionDto.from(exception))
     }
 
     @ExceptionHandler(HttpMessageConversionException::class)
     fun handleHttpMessageConversionException(
         exception: HttpMessageConversionException
-    ): ResponseEntity<ApiResponse<Any>> {
+    ): ResponseEntity<WeQuizExceptionDto> {
         return ResponseEntity.badRequest()
-            .body(ApiResponse.failure(WeQuizException()))
+            .body(WeQuizExceptionDto.default())
+    }
+}
+
+data class WeQuizExceptionDto(
+    val code: String,
+    val message: String
+) {
+    companion object {
+        fun default(): WeQuizExceptionDto {
+            return WeQuizExceptionDto(
+                code = WeQuizError.WEC999.code,
+                message = "문제가 발생 했어요"
+            )
+        }
+
+        fun from(exception: WeQuizException): WeQuizExceptionDto {
+            return WeQuizExceptionDto(
+                code = exception.error.code,
+                message = exception.message
+            )
+        }
     }
 }

@@ -7,7 +7,6 @@ import kr.mashup.wequiz.application.answer.AnswerService
 import kr.mashup.wequiz.application.answer.AnswersDto
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
-import kr.mashup.wequiz.controller.ApiResponse
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -27,7 +26,7 @@ class AnswerApiController(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable quizId: Long,
         @RequestBody createAnswerForm: CreateAnswerForm
-    ): ApiResponse<CreateAnswerResponse> {
+    ): CreateAnswerResponse {
         val quizAnswer = answerService
             .create(
                 userInfo = userInfoDto,
@@ -39,7 +38,7 @@ class AnswerApiController(
             quizCreator = UserInfoDto.from(quizAnswer.quiz.user),
             quizResolver = userInfoDto,
             totalScore = quizAnswer.totalScore
-        ).let { ApiResponse.success(it) }
+        )
     }
 }
 
