@@ -7,6 +7,7 @@ import kr.mashup.wequiz.application.answer.QuizAnswerRankingDto
 import kr.mashup.wequiz.application.ranking.QuizRankingService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
+import kr.mashup.wequiz.repository.answer.MyQuizRankingDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,21 +25,26 @@ class RankingApiController(
     @GetMapping("/my-quiz")
     fun getMyQuizAnswerRanking(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
+        @RequestParam cursorScore: Int? = null,
+        @RequestParam cursorUserId: Long? = null,
         @RequestParam size: Int = 15,
-        @RequestParam quizAnswerCursorId: Long? = null
-    ): GetQuizAnswerRankingResponse {
+    ): GetMyQuizAnswerRankingResponse {
         val searchSize = size + 1
 
-        val quizAnswers = rankingService.findMyQuizRanking(
-            quizAnswerId = quizAnswerCursorId,
+        val rankings = rankingService.findMyQuizRanking(
+            cursorUserId = cursorUserId,
+            cursorScore = cursorScore,
             quizCreatorId = userInfoDto.id,
-            size = size
+            size = searchSize
         )
 
-        return GetQuizAnswerRankingResponse(
-            hasNext = quizAnswers.size == searchSize,
-            cursorQuizAnswerId = quizAnswers.getOrNull(size)?.quizAnswerId,
-            rankings = quizAnswers.take(size).map { it.toRankingPresentation() }
+        val last = rankings.getOrNull(size - 1)
+
+        return GetMyQuizAnswerRankingResponse(
+            hasNext = rankings.size == searchSize,
+            cursorUserId = last?.user?.id,
+            cursorScore = last?.totalScore,
+            rankings = rankings.take(size).map { it.toRankingPresentation() }
         )
     }
 
@@ -65,6 +71,13 @@ class RankingApiController(
     }
 }
 
+data class GetMyQuizAnswerRankingResponse(
+    val hasNext: Boolean,
+    val cursorUserId: Long? = null,
+    val cursorScore: Int? = null,
+    val rankings: List<QuizAnswerRankingPresentation>
+
+)
 data class GetQuizAnswerRankingResponse(
     val hasNext: Boolean,
     val cursorQuizAnswerId: Long? = null,
@@ -74,11 +87,14 @@ data class GetQuizAnswerRankingResponse(
 data class QuizAnswerRankingPresentation(
     val userInfoDto: UserInfoDto,
     val score: Int,
-    val quizAnswerId: Long
 )
 
 fun QuizAnswerRankingDto.toRankingPresentation() = QuizAnswerRankingPresentation(
     userInfoDto = UserInfoDto.from(userId, nickname),
     score = totalScore,
-    quizAnswerId = quizAnswerId
+)
+
+fun MyQuizRankingDto.toRankingPresentation() = QuizAnswerRankingPresentation(
+    userInfoDto = UserInfoDto.from(user),
+    score = totalScore,
 )
