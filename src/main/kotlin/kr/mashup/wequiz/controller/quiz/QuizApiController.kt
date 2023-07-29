@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import kr.mashup.wequiz.application.quiz.QuizService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
+import kr.mashup.wequiz.controller.ApiResponse
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizResponse
 import kr.mashup.wequiz.controller.quiz.model.DeleteQuizResponse
@@ -31,8 +32,9 @@ class QuizApiController(
     fun createQuiz(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @RequestBody createQuizRequest: CreateQuizRequest
-    ): CreateQuizResponse {
+    ): ApiResponse<CreateQuizResponse> {
         return CreateQuizResponse(quizId = quizService.createQuiz(userInfoDto, createQuizRequest).id)
+            .let { ApiResponse.success(it) }
     }
 
     @Operation(summary = "퀴즈 단건 조회")
