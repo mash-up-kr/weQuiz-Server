@@ -39,9 +39,10 @@ class RankingApiController(
         )
 
         val last = rankings.getOrNull(size - 1)
+
         return GetMyQuizAnswerRankingResponse(
             hasNext = rankings.size == searchSize,
-            cursorUserId = last?.user.id,
+            cursorUserId = last?.user?.id,
             cursorScore = last?.totalScore,
             rankings = rankings.take(size).map { it.toRankingPresentation() }
         )

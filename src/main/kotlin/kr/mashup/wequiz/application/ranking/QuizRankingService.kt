@@ -2,6 +2,7 @@ package kr.mashup.wequiz.application.ranking
 
 import kr.mashup.wequiz.application.answer.QuizAnswerRankingDto
 import kr.mashup.wequiz.application.answer.toRankingDto
+import kr.mashup.wequiz.domain.exception.WeQuizException
 import kr.mashup.wequiz.repository.answer.MyQuizRankingDto
 import kr.mashup.wequiz.repository.answer.QuizAnswerQueryRepository
 import kr.mashup.wequiz.repository.answer.QuizAnswerRepository
