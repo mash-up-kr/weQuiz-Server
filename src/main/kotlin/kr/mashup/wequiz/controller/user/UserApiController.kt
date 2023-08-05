@@ -7,7 +7,9 @@ import kr.mashup.wequiz.application.user.UserService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.controller.ApiResponse
+import kr.mashup.wequiz.controller.user.model.JoinAnonymousUserRequest
 import kr.mashup.wequiz.controller.user.model.JoinUserRequest
+import kr.mashup.wequiz.controller.user.model.JonAnonymousUserResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -34,6 +36,17 @@ class UserApiController(
         return ApiResponse.success(true)
     }
 
+    @Operation(summary = "비회원 회원 가입")
+    @PostMapping("/join/anonymous")
+    fun joinAnonymousUser(
+        @RequestBody request: JoinAnonymousUserRequest
+    ): ApiResponse<JonAnonymousUserResponse> {
+        val user = userService.joinAnonymous(nickname = request.nickname)
+        return ApiResponse.success(
+            JonAnonymousUserResponse(token = user.token)
+        )
+    }
+
     @Operation(summary = "내 정보 조회하기")
     @GetMapping()
     fun me(
@@ -51,6 +64,6 @@ class UserApiController(
     data class UserPresentation(
         val id: Long,
         val nickname: String,
-        val description: String
+        val description: String?
     )
 }
