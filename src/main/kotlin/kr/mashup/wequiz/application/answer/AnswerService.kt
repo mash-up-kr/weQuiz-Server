@@ -30,7 +30,7 @@ class AnswerService(
         val user = userRepository.findByIdOrNull(userInfo.id) ?: throw WeQuizException("유저를 찾을 수 없어요.")
         val quiz = quizRepository.findByIdOrNull(quizId) ?: throw WeQuizException("퀴즈를 찾을 수 없어요.")
 
-        if(quiz.isOwner(user.id)) throw WeQuizException("내가 만든 퀴즈는 풀 수 없어요.")
+        if (quiz.isOwner(user.id)) throw WeQuizException("내가 만든 퀴즈는 풀 수 없어요.")
         val quizAnswer = createQuizAnswer(quizId, user, quiz)
 
         val totalScore = answers.sumOf { answer ->
