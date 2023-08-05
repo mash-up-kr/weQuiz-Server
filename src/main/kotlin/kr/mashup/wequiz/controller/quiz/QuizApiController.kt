@@ -40,7 +40,6 @@ class QuizApiController(
     @Operation(summary = "퀴즈 단건 조회")
     @GetMapping("/{quizId}")
     fun getQuiz(
-        @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
     ): ApiResponse<GetQuizResponse> {
         return quizService.getQuiz(quizId)
