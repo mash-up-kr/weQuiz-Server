@@ -9,6 +9,15 @@ Content-Type: application/json
   "description": "your_description"
 }
 
+### 비회원 회원 가입
+POST http://{{host}}/api/v1/user/join/anonymous
+Content-Type: application/json
+
+{
+  "nickname": "your_nickname"
+}
+
+
 ### 내 정보 불러오기
 GET http://{{host}}/api/v1/user
 Content-Type: application/json

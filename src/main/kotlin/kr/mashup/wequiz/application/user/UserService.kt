@@ -6,6 +6,7 @@ import kr.mashup.wequiz.domain.user.User
 import kr.mashup.wequiz.repository.user.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class UserService(
@@ -32,5 +33,14 @@ class UserService(
         userRepository.save(user)
     }
 
+    fun joinAnonymous(nickname: String): User {
+        val randomToken = UUID.randomUUID().toString()
+
+        val user = User.createAnonymous(
+            token = randomToken,
+            nickname = nickname
+        )
+        return userRepository.save(user)
+    }
     fun find(id: Long) = userRepository.findByIdOrNull(id) ?: throw RuntimeException()
 }

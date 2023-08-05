@@ -7,3 +7,11 @@ data class JoinUserRequest(
     val nickname: String,
     val description: String
 )
+
+data class JoinAnonymousUserRequest(
+    val nickname: String
+)
+
+data class JonAnonymousUserResponse(
+    val token: String
+)
