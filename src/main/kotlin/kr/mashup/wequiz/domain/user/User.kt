@@ -21,13 +21,16 @@ class User(
     val token: String,
 
     @Column(name = "phone")
-    val phone: String,
+    val phone: String? = null,
 
     @Column(name = "nickname")
     val nickname: String,
 
     @Column(name = "description")
-    val description: String,
+    val description: String? = null,
+
+    @Column(name = "join_type")
+    val joinType: UserJoinType,
 
     @OneToMany(mappedBy = "user")
     val quiz: List<Quiz> = emptyList(),
@@ -53,8 +56,23 @@ class User(
                 token = token,
                 phone = phone,
                 nickname = nickname,
-                description = description
+                description = description,
+                joinType = UserJoinType.NORMAL
             )
         }
+
+        fun createAnonymous(
+            token: String,
+            nickname: String
+        ) = User(
+            token = token,
+            nickname = nickname,
+            joinType = UserJoinType.ANONYMOUS
+        )
     }
+}
+
+enum class UserJoinType(val description: String) {
+    NORMAL("일반"),
+    ANONYMOUS("비회원")
 }
