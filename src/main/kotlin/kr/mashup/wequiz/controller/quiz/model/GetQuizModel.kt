@@ -1,6 +1,7 @@
 // ktlint-disable filename
 package kr.mashup.wequiz.controller.quiz.model
 
+import kr.mashup.wequiz.config.auh.UserInfoDto
 import kr.mashup.wequiz.domain.quiz.Quiz
 import kr.mashup.wequiz.domain.quiz.option.Option
 import kr.mashup.wequiz.domain.quiz.question.Question
@@ -8,6 +9,7 @@ import kr.mashup.wequiz.domain.quiz.question.Question
 data class GetQuizResponse(
     val id: Long,
     val title: String,
+    val creator: UserInfoDto,
     val questions: List<QuestionPresentation>
 ) {
     data class QuestionPresentation(
@@ -53,6 +55,7 @@ data class GetQuizResponse(
             return GetQuizResponse(
                 id = quiz.id,
                 title = quiz.title,
+                creator = UserInfoDto.from(quiz.user),
                 questions = quiz.questions.map {
                     QuestionPresentation.from(it)
                 }
