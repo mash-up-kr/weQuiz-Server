@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import kr.mashup.wequiz.application.quiz.QuizService
 import kr.mashup.wequiz.config.auh.UserInfo
 import kr.mashup.wequiz.config.auh.UserInfoDto
+import kr.mashup.wequiz.controller.ApiResponse
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizRequest
 import kr.mashup.wequiz.controller.quiz.model.CreateQuizResponse
 import kr.mashup.wequiz.controller.quiz.model.DeleteQuizResponse
@@ -31,8 +32,9 @@ class QuizApiController(
     fun createQuiz(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @RequestBody createQuizRequest: CreateQuizRequest
-    ): CreateQuizResponse {
+    ): ApiResponse<CreateQuizResponse> {
         return CreateQuizResponse(quizId = quizService.createQuiz(userInfoDto, createQuizRequest).id)
+            .let { ApiResponse.success(it) }
     }
 
     @Operation(summary = "퀴즈 단건 조회")
@@ -40,8 +42,9 @@ class QuizApiController(
     fun getQuiz(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
-    ): GetQuizResponse {
+    ): ApiResponse<GetQuizResponse> {
         return quizService.getQuiz(quizId)
+            .let { ApiResponse.success(it) }
     }
 
     @Operation(
@@ -55,9 +58,10 @@ class QuizApiController(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @RequestParam size: Int = 15,
         @RequestParam cursor: Long? = null
-    ): GetQuizListResponse {
+    ): ApiResponse<GetQuizListResponse> {
         val quizList = quizService.getQuizList(userInfoDto.id, cursor, size)
         return GetQuizListResponse.from(quizList)
+            .let { ApiResponse.success(it) }
     }
 
     @Operation(summary = "퀴즈 삭제")
@@ -65,11 +69,12 @@ class QuizApiController(
     fun deleteQuiz(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto,
         @PathVariable(name = "quizId") quizId: Long
-    ): DeleteQuizResponse {
+    ): ApiResponse<DeleteQuizResponse> {
         quizService.deleteQuiz(
             requesterId = userInfoDto.id,
             quizId = quizId
         )
         return DeleteQuizResponse(isDeleted = true)
+            .let { ApiResponse.success(it) }
     }
 }

@@ -5,8 +5,8 @@ import kr.mashup.wequiz.domain.answer.QuestionAnswer
 import kr.mashup.wequiz.domain.answer.QuestionAnswerScoreCalculator
 import kr.mashup.wequiz.domain.answer.QuizAnswer
 import kr.mashup.wequiz.domain.exception.WeQuizException
-import kr.mashup.wequiz.repository.answer.QuestionAnswerRepository
-import kr.mashup.wequiz.repository.answer.QuizAnswerQueryRepository
+import kr.mashup.wequiz.domain.quiz.Quiz
+import kr.mashup.wequiz.domain.user.User
 import kr.mashup.wequiz.repository.answer.QuizAnswerRepository
 import kr.mashup.wequiz.repository.quiz.QuizRepository
 import kr.mashup.wequiz.repository.user.UserRepository
@@ -19,8 +19,6 @@ class AnswerService(
     private val userRepository: UserRepository,
     private val quizRepository: QuizRepository,
     private val quizAnswerRepository: QuizAnswerRepository,
-    private val quizAnswerQueryRepository: QuizAnswerQueryRepository,
-    private val questionAnswerRepository: QuestionAnswerRepository,
     private val questionAnswerScoreCalculator: QuestionAnswerScoreCalculator
 ) {
     @Transactional
@@ -33,11 +31,7 @@ class AnswerService(
         val quiz = quizRepository.findByIdOrNull(quizId) ?: throw WeQuizException("퀴즈를 찾을 수 없어요.")
 
         if(quiz.isOwner(user.id)) throw WeQuizException("내가 만든 퀴즈는 풀 수 없어요.")
-    
-        val quizAnswer = QuizAnswer.createNew(
-            user = user,
-            quiz = quiz
-        )
+        val quizAnswer = createQuizAnswer(quizId, user, quiz)
 
         val totalScore = answers.sumOf { answer ->
             val question = quiz.findQuestion(answer.questionId) ?: throw WeQuizException("문제를 찾을 수 없어요.")
@@ -59,6 +53,17 @@ class AnswerService(
         quizAnswer.totalScore = totalScore
 
         return quizAnswerRepository.save(quizAnswer)
+    }
+
+    private fun createQuizAnswer(quizId: Long, user: User, quiz: Quiz): QuizAnswer {
+        quizAnswerRepository.findByQuizIdAndUserId(quizId, user.id)?.let { quizAnswer ->
+            quizAnswerRepository.delete(quizAnswer)
+        }
+
+        return QuizAnswer.createNew(
+            user = user,
+            quiz = quiz
+        )
     }
 }
 

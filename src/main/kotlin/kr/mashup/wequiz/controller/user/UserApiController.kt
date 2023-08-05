@@ -38,14 +38,14 @@ class UserApiController(
     @GetMapping()
     fun me(
         @Schema(hidden = true) @UserInfo userInfoDto: UserInfoDto
-    ): UserPresentation {
+    ): ApiResponse<UserPresentation> {
         val user = userService.find(userInfoDto.id)
 
         return UserPresentation(
             id = user.id,
             nickname = user.nickname,
             description = user.description
-        )
+        ).let { ApiResponse.success(it) }
     }
 
     data class UserPresentation(
