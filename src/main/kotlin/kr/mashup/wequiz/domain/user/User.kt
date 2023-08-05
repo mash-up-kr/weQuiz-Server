@@ -2,6 +2,8 @@ package kr.mashup.wequiz.domain.user
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -29,6 +31,7 @@ class User(
     @Column(name = "description")
     val description: String? = null,
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "join_type")
     val joinType: UserJoinType,
 
